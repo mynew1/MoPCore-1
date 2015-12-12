@@ -2,6 +2,7 @@ Instances
 
 Grim Batol = Boss scripts added, dragons do not fly yet.
 
+The StoneCore = Boss scripts added, Mana storm is not spawned and some npc's are missing.
 
 
 
@@ -23,6 +24,9 @@ BoT = Boss scripts added, only tested halfus.
 
 Zones
 
+Deepholm = Haven't tested any of it.
+
+Kezan = haven't tested any of it, the quest seem to all be availible at the same time.. That's pretty easy but time consuming to fix.
 
 
 
