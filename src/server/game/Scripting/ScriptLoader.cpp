@@ -220,13 +220,7 @@ void AddSC_sunken_temple();                  // Sunken Temple
 void AddSC_instance_sunken_temple();
 void AddSC_instance_sunwell_plateau();       //Sunwell Plateau
 
-void AddSC_bastion_of_twilight(); //Bastion of Twilight
-void AddSC_boss_chogall();
-void AddSC_boss_ascendant_council();
-void AddSC_boss_halfus_wyrmbreaker();
-void AddSC_boss_sinestra();
-void AddSC_boss_theralion_and_valiona();
-void AddSC_instance_bastion_of_twilight();
+
 
 void AddSC_boss_kalecgos();
 void AddSC_boss_brutallus();
@@ -643,6 +637,12 @@ void AddSC_boss_argaloth();
 void AddSC_boss_occuthar();
 void AddSC_boss_alizabal();
 
+void AddSC_boss_drahga_shadowburner(); //Grim Batol
+void AddSC_boss_erudax();
+void AddSC_boss_forgemaster_throngus();
+void AddSC_boss_general_umbriss();
+void AddSC_grim_batol();
+void AddSC_instance_grim_batol();
 
 void AddSC_instance_lost_city_of_the_tolvir(); // Lost City of the Tol'Vir
 void AddSC_lost_city_of_the_tolvir();
@@ -669,6 +669,14 @@ void AddSC_boss_omnotron_defence_system();
 void AddSC_boss_maloriak();
 void AddSC_boss_chimaeron();
 void AddSC_boss_atramedes();
+
+void AddSC_bastion_of_twilight(); //Bastion of Twilight
+void AddSC_boss_chogall();
+void AddSC_boss_ascendant_council();
+void AddSC_boss_halfus_wyrmbreaker();
+void AddSC_boss_sinestra();
+void AddSC_boss_theralion_and_valiona();
+void AddSC_instance_bastion_of_twilight();
 
 void AddSC_instance_throne_of_the_four_winds(); // Throne of the Four Winds
 void AddSC_throne_of_the_four_winds();
@@ -1040,6 +1048,13 @@ void AddEasternKingdomsScripts()
 	 AddSC_boss_sinestra();
 	 AddSC_boss_theralion_and_valiona();
 	 AddSC_instance_bastion_of_twilight();
+
+	AddSC_boss_drahga_shadowburner(); //Grim Batol
+	AddSC_boss_erudax();
+	AddSC_boss_forgemaster_throngus();
+	AddSC_boss_general_umbriss();
+	AddSC_grim_batol();
+    AddSC_instance_grim_batol();
 
     AddSC_boss_archaedas();                 //Uldaman
     AddSC_boss_ironaya();

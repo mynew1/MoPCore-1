@@ -227,7 +227,15 @@ set(scripts_STAT_SRCS
   EasternKingdoms/BastionOfTwilight/instance_bastion_of_twilight.cpp
   EasternKingdoms/BastionOfTwilight/bastion_of_twilight.cpp
   EasternKingdoms/BastionOfTwilight/bastion_of_twilight.h
-
+   
+  EasternKingdoms/GrimBatol/boss_general_umbriss.cpp
+  EasternKingdoms/GrimBatol/boss_forgemaster_throngus.cpp
+  EasternKingdoms/GrimBatol/boss_drahga_shadowburner.cpp
+  EasternKingdoms/GrimBatol/boss_erudax.cpp
+  EasternKingdoms/GrimBatol/instance_grim_batol.cpp
+  EasternKingdoms/GrimBatol/grim_batol.cpp
+  EasternKingdoms/GrimBatol/grim_batol.h
+  
 )
 
 message("  -> Prepared: Eastern Kingdoms")
