@@ -236,6 +236,15 @@ set(scripts_STAT_SRCS
   EasternKingdoms/GrimBatol/grim_batol.cpp
   EasternKingdoms/GrimBatol/grim_batol.h
   
+  EasternKingdoms/Scholomance/boss_darkmaster_gandling.cpp
+  EasternKingdoms/Scholomance/boss_jandice_barov.cpp
+  EasternKingdoms/Scholomance/boss_lillian_voss.cpp
+  EasternKingdoms/Scholomance/boss_rattlegore.cpp
+  EasternKingdoms/Scholomance/instance_scholomance.cpp
+  EasternKingdoms/Scholomance/scholomance.cpp
+  EasternKingdoms/Scholomance/scholomance.h
+  
+  
 )
 
 message("  -> Prepared: Eastern Kingdoms")

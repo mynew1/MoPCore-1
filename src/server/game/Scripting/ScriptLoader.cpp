@@ -196,6 +196,8 @@ void AddSC_boss_jandice_barov();
 void AddSC_boss_lillian_voss();
 void AddSC_boss_rattlegore();
 void AddSC_scholomance();
+void AddSC_instance_scholomance();
+
 void AddSC_boss_baron_ashbury();    //Shadowfang keep
 void AddSC_boss_baron_silverlaine();
 void AddSC_boss_commander_springvale();
@@ -1055,6 +1057,13 @@ void AddEasternKingdomsScripts()
 	AddSC_boss_general_umbriss();
 	AddSC_grim_batol();
     AddSC_instance_grim_batol();
+
+    AddSC_boss_darkmaster_gandling();       //Scholomance
+	AddSC_boss_jandice_barov();
+	AddSC_boss_lillian_voss();
+	AddSC_boss_rattlegore();
+	AddSC_scholomance();
+    AddSC_instance_scholomance();
 
     AddSC_boss_archaedas();                 //Uldaman
     AddSC_boss_ironaya();
