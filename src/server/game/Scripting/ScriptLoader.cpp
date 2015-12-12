@@ -219,6 +219,15 @@ void AddSC_stratholme();
 void AddSC_sunken_temple();                  // Sunken Temple
 void AddSC_instance_sunken_temple();
 void AddSC_instance_sunwell_plateau();       //Sunwell Plateau
+
+void AddSC_bastion_of_twilight(); //Bastion of Twilight
+void AddSC_boss_chogall();
+void AddSC_boss_ascendant_council();
+void AddSC_boss_halfus_wyrmbreaker();
+void AddSC_boss_sinestra();
+void AddSC_boss_theralion_and_valiona();
+void AddSC_instance_bastion_of_twilight();
+
 void AddSC_boss_kalecgos();
 void AddSC_boss_brutallus();
 void AddSC_boss_felmyst();
@@ -273,6 +282,7 @@ void AddSC_undercity();
 void AddSC_western_plaguelands();
 void AddSC_westfall();
 void AddSC_wetlands();
+
 
 //kalimdor
 void AddSC_blackfathom_deeps();              //Blackfathom Depths
@@ -1022,6 +1032,15 @@ void AddEasternKingdomsScripts()
     AddSC_boss_muru();
     AddSC_boss_kiljaeden();
     AddSC_sunwell_plateau();
+
+	 AddSC_bastion_of_twilight(); //Bastion of Twilight
+	 AddSC_boss_chogall();
+	 AddSC_boss_ascendant_council();
+	 AddSC_boss_halfus_wyrmbreaker();
+	 AddSC_boss_sinestra();
+	 AddSC_boss_theralion_and_valiona();
+	 AddSC_instance_bastion_of_twilight();
+
     AddSC_boss_archaedas();                 //Uldaman
     AddSC_boss_ironaya();
     AddSC_uldaman();
