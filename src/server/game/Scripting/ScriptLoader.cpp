@@ -727,6 +727,17 @@ void AddSC_boss_warmaster_blackhorn();
 void AddSC_spine_of_deathwing();
 void AddSC_madness_of_deathwing();
 
+
+void AddSC_deepholm(); //Maelstrom Scripts
+void AddSC_kezan();
+void AddSC_lost_isle();
+void AddSC_boss_corborus(); //The StoneCore
+void AddSC_boss_high_priestess_azil();
+void AddSC_boss_ozruk();
+void AddSC_boss_slabhide();
+void AddSC_instance_the_stonecore();
+void AddSC_the_stonecore();
+
 // Pandaria
 // Heart of Fear
 void AddSC_instance_heart_of_fear();
@@ -825,6 +836,7 @@ void AddScripts()
     AddKalimdorScripts();
     AddOutlandScripts();
     AddNorthrendScripts();
+	AddMaelstromScripts();
     AddPandarieScripts();
     AddBattlegroundScripts();
     AddOutdoorPvPScripts();
@@ -1135,7 +1147,21 @@ void AddEasternKingdomsScripts()
     AddSC_boss_alizabal();
 #endif
 }
+void AddMaelstromScripts()
+{
 
+#ifdef SCRIPTS
+	 AddSC_deepholm(); //Maelstrom Scripts
+	 AddSC_kezan();
+	 AddSC_lost_isle();
+	 AddSC_boss_corborus(); //The StoneCore
+	 AddSC_boss_high_priestess_azil();
+	 AddSC_boss_ozruk();
+	 AddSC_boss_slabhide();
+	 AddSC_instance_the_stonecore();
+	 AddSC_the_stonecore();
+#endif
+}
 void AddKalimdorScripts()
 {
 #ifdef SCRIPTS

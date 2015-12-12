@@ -29621,6 +29621,15 @@ void Player::SwitchForm()
         SwitchToWorgenForm();
 }
 
+bool Player::HavePetSummoned(uint32 petEntry)
+{
+	for (Unit::ControlList::iterator itr = m_Controlled.begin(); itr != m_Controlled.end(); ++itr)
+		if ((*itr)->GetEntry() == petEntry)
+			return true;
+
+	return false;
+}
+
 void Player::SendPetTameResult(PetTameResult result)
 {
     WorldPacket data(SMSG_PET_TAME_FAILURE, 4);

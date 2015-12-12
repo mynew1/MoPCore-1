@@ -21568,23 +21568,22 @@ void Unit::_EnterVehicle(Vehicle* vehicle, int8 seatId, AuraApplication const* a
 
 void Unit::ChangeSeat(int8 seatId, bool next)
 {
-    if (!m_vehicle)
-        return;
+	if (!m_vehicle)
+		return;
 
-    if (seatId < 0)
-    {
-        seatId = m_vehicle->GetNextEmptySeat(GetTransSeat(), next);
-        if (seatId < 0)
-            return;
-    }
-    else if (seatId == GetTransSeat() || !m_vehicle->HasEmptySeat(seatId))
-        return;
+	if (seatId < 0)
+	{
+		seatId = m_vehicle->GetNextEmptySeat(GetTransSeat(), next);
+		if (seatId < 0)
+			return;
+	}
+	else if (seatId == GetTransSeat() || !m_vehicle->HasEmptySeat(seatId))
+		return;
 
-    m_vehicle->RemovePassenger(this);
-    if (!m_vehicle->AddPassenger(this, seatId))
-        ASSERT(false);
+	m_vehicle->RemovePassenger(this);
+	if (!m_vehicle->AddPassenger(this, seatId))
+		ASSERT(false);
 }
-
 void Unit::ExitVehicle(Position const* exitPosition)
 {
     //! This function can be called at upper level code to initialize an exit from the passenger's side.
