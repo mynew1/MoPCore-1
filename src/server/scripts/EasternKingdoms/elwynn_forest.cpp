@@ -715,6 +715,147 @@ public:
 		return new npc_hoggerAI(creature);
 	}
 };
+/*######
+## npc_training_dummy_elwynn
+######*/
+
+enum eTrainingDummySpells
+{
+	SPELL_CHARGE = 100,
+	SPELL_AUTORITE = 105361, // OnDamage
+	SPELL_ASSURE = 56641,
+	SPELL_EVISCERATION = 2098,
+	SPELL_MOT_DOULEUR_1 = 589,
+	SPELL_MOT_DOULEUR_2 = 124464, // Je ne sais pas si un des deux est le bon
+	SPELL_NOVA = 122,
+	SPELL_CORRUPTION_1 = 172,
+	SPELL_CORRUPTION_2 = 87389,
+	SPELL_CORRUPTION_3 = 131740,
+	SPELL_PAUME_TIGRE = 100787
+};
+
+class npc_training_dummy_start_zones : public CreatureScript
+{
+public:
+	npc_training_dummy_start_zones() : CreatureScript("npc_training_dummy_start_zones") { }
+
+	struct npc_training_dummy_start_zonesAI : Scripted_NoMovementAI
+	{
+		npc_training_dummy_start_zonesAI(Creature* creature) : Scripted_NoMovementAI(creature)
+		{}
+
+		uint32 resetTimer;
+
+		void Reset()
+		{
+			me->SetControlled(true, UNIT_STATE_STUNNED);//disable rotate
+			me->ApplySpellImmune(0, IMMUNITY_EFFECT, SPELL_EFFECT_KNOCK_BACK, true);//imune to knock aways like blast wave
+
+			resetTimer = 5000;
+		}
+
+		void EnterEvadeMode()
+		{
+			if (!_EnterEvadeMode())
+				return;
+
+			Reset();
+		}
+
+		void DamageTaken(Unit* doneBy, uint32& damage)
+		{
+			resetTimer = 5000;
+			damage = 0;
+
+			if (doneBy->HasAura(SPELL_AUTORITE))
+				if (doneBy->ToPlayer())
+					doneBy->ToPlayer()->KilledMonsterCredit(44175, 0);
+		}
+
+		void EnterCombat(Unit* /*who*/)
+		{
+			return;
+		}
+
+		void SpellHit(Unit* Caster, const SpellInfo* Spell)
+		{
+			switch (Spell->Id)
+			{
+			case SPELL_CHARGE:
+			case SPELL_ASSURE:
+			case SPELL_EVISCERATION:
+			case SPELL_MOT_DOULEUR_1:
+			case SPELL_MOT_DOULEUR_2:
+			case SPELL_NOVA:
+			case SPELL_CORRUPTION_1:
+			case SPELL_CORRUPTION_2:
+			case SPELL_CORRUPTION_3:
+			case SPELL_PAUME_TIGRE:
+				if (Caster->ToPlayer())
+					Caster->ToPlayer()->KilledMonsterCredit(44175, 0);
+				break;
+			default:
+				break;
+			}
+		}
+
+		void UpdateAI(uint32 const diff)
+		{
+			if (!UpdateVictim())
+				return;
+
+			if (!me->HasUnitState(UNIT_STATE_STUNNED))
+				me->SetControlled(true, UNIT_STATE_STUNNED);//disable rotate
+
+			if (resetTimer <= diff)
+			{
+				EnterEvadeMode();
+				resetTimer = 5000;
+			}
+			else
+				resetTimer -= diff;
+		}
+		void MoveInLineOfSight(Unit* /*who*/){ return; }
+	};
+
+	CreatureAI* GetAI(Creature* creature) const
+	{
+		return new npc_training_dummy_start_zonesAI(creature);
+	}
+};
+
+/*######
+## spell_quest_fear_no_evil
+######*/
+
+class spell_quest_fear_no_evil : public SpellScriptLoader
+{
+public:
+	spell_quest_fear_no_evil() : SpellScriptLoader("spell_quest_fear_no_evil") { }
+
+	class spell_quest_fear_no_evil_SpellScript : public SpellScript
+	{
+		PrepareSpellScript(spell_quest_fear_no_evil_SpellScript);
+
+		void OnDummy(SpellEffIndex /*effIndex*/)
+		{
+			if (GetCaster())
+				if (GetCaster()->ToPlayer())
+					GetCaster()->ToPlayer()->KilledMonsterCredit(50047, 0);
+		}
+
+		void Register()
+		{
+			OnEffectHitTarget += SpellEffectFn(spell_quest_fear_no_evil_SpellScript::OnDummy, EFFECT_0, SPELL_EFFECT_DUMMY);
+		}
+	};
+
+	SpellScript* GetSpellScript() const
+	{
+		return new spell_quest_fear_no_evil_SpellScript();
+	}
+};
+
 
 /*######
 ## Spray Water (spell) 80199.
@@ -775,6 +916,8 @@ void AddSC_elwyn_forest()
 	new npc_brother_paxton();
 	new npc_blackrock_battle_worg();
 	new npc_injured_stormwind_infantry();
+	new npc_training_dummy_start_zones();
+	new spell_quest_fear_no_evil();
 	new npc_hogger();
 	new spell_spray_water();
 }
