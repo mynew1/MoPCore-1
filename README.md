@@ -4,7 +4,7 @@
   Originally written by TrinityCore team, MaNGOS, based on Jade's Core,SkyFire548.
   
 
- The plan is to add every script for every isntance, new scripts will be added one at a time to prevent massive ammounts of errors.
+ The plan is to add every script for every isntance, new scripts will be added one at a time to prevent massive amounts of errors.
 
  May or may not compile/function properly.
  
