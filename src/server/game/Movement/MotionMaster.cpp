@@ -300,6 +300,21 @@ void MotionMaster::MovePoint(uint32 id, float x, float y, float z)
     }
 }
 
+void MotionMaster::MovePoint2(uint32 id, float x, float y, float z, bool generatePath)
+{
+	if (_owner->GetTypeId() == TYPEID_PLAYER)
+	{
+		sLog->outDebug(LOG_FILTER_GENERAL, "Player (GUID: %u) targeted point (Id: %u X: %f Y: %f Z: %f)", _owner->GetGUIDLow(), id, x, y, z);
+		Mutate(new PointMovementGenerator<Player>(id, x, y, z, generatePath), MOTION_SLOT_ACTIVE);
+	}
+	else
+	{
+		sLog->outDebug(LOG_FILTER_GENERAL, "Creature (Entry: %u GUID: %u) targeted point (ID: %u X: %f Y: %f Z: %f)",
+			_owner->GetEntry(), _owner->GetGUIDLow(), id, x, y, z);
+		Mutate(new PointMovementGenerator<Creature>(id, x, y, z, generatePath), MOTION_SLOT_ACTIVE);
+	}
+}
+
 void MotionMaster::MoveLand(uint32 id, Position const& pos)
 {
     float x, y, z;
@@ -396,6 +411,22 @@ void MotionMaster::MoveJump(float x, float y, float z, float speedXY, float spee
     Mutate(new EffectMovementGenerator(id), MOTION_SLOT_CONTROLLED);
 }
 
+// Perfect for Knockback visuals to specific locations - Unit maintains original orientation throughout movement
+void MotionMaster::MoveKnockTo(float x, float y, float z, float speedXY, float speedZ, uint32 id)
+{
+	sLog->outDebug(LOG_FILTER_GENERAL, "Unit (GUID: %u) jump to point (X: %f Y: %f Z: %f)", _owner->GetGUIDLow(), x, y, z);
+
+	float moveTimeHalf = speedZ / Movement::gravity;
+	float max_height = -Movement::computeFallElevation(moveTimeHalf, false, -speedZ);
+
+	Movement::MoveSplineInit init(*_owner);
+	init.MoveTo(x, y, z);
+	init.SetOrientationFixed(true);
+	init.SetParabolic(max_height, 0);
+	init.SetVelocity(speedXY);
+	init.Launch();
+	Mutate(new EffectMovementGenerator(id), MOTION_SLOT_CONTROLLED);
+}
 void MotionMaster::CustomJump(float x, float y, float z, float speedXY, float speedZ, uint32 id)
 {
     speedZ *= 2.3f;

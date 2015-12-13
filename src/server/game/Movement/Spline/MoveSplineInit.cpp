@@ -23,6 +23,7 @@
 #include "Transport.h"
 #include "Vehicle.h"
 
+
 namespace Movement
 {
     UnitMoveType SelectSpeedType(uint32 moveFlags)
@@ -416,6 +417,8 @@ namespace Movement
         args.path[1] = transform(dest);
     }
 
+	
+	
     void MoveSplineInit::SetFall()
     {
         args.flags.EnableFalling();
