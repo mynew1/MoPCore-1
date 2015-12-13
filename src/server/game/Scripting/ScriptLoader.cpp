@@ -765,6 +765,14 @@ void AddSC_boss_tsulong();
 void AddSC_instance_terrace_of_endless_spring();
 void AddSC_terrace_of_endless_spring();
 
+void AddSC_boss_council_of_elders(); //Throne of Thunder
+void AddSC_boss_horridon();
+void AddSC_boss_jin_rokh_breaker();
+void AddSC_boss_megaera();
+void AddSC_boss_tortos();
+void AddSC_instance_throne_of_thunder();
+
+
 void AddSC_instance_temple_of_jade_serpent();       // Temple of Jade Serpent
 void AddSC_boss_wise_mari();
 void AddSC_boss_lorewalker_stonestep();
@@ -1637,6 +1645,13 @@ void AddPandarieScripts()
 	AddSC_boss_tsulong();
 	AddSC_instance_terrace_of_endless_spring();
 	AddSC_terrace_of_endless_spring();
+
+	AddSC_boss_council_of_elders(); //Throne of Thunder
+	AddSC_boss_horridon();
+	AddSC_boss_jin_rokh_breaker();
+	AddSC_boss_megaera();
+	AddSC_boss_tortos();
+	AddSC_instance_throne_of_thunder();
 
     AddSC_instance_temple_of_jade_serpent();        // Temple of Jade Serpent
     AddSC_boss_wise_mari();
