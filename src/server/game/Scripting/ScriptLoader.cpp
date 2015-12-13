@@ -749,12 +749,13 @@ void AddSC_the_stonecore();
 // Pandaria
 // Heart of Fear
 void AddSC_instance_heart_of_fear();
+void AddSC_heart_of_fear();
 void AddSC_boss_ambershaper_unsok();
-void AddSC_boss_blade_lord_tayak();
+void AddSC_boss_tayak();
 void AddSC_boss_garalon();
 void AddSC_boss_grand_empress_shekzeer();
-void AddSC_boss_imperial_vizier_zorlok();
-void AddSC_boss_wind_lord_meljarak();
+void AddSC_boss_zorlok();
+void AddSC_boss_meljarak();
 
 void AddSC_instance_temple_of_jade_serpent();       // Temple of Jade Serpent
 void AddSC_boss_wise_mari();
@@ -1604,12 +1605,13 @@ void AddPandarieScripts()
 #ifdef SCRIPTS
 // Heart of Fear
 	AddSC_instance_heart_of_fear();
+	AddSC_heart_of_fear();
 	AddSC_boss_ambershaper_unsok();
-	AddSC_boss_blade_lord_tayak();
+	AddSC_boss_tayak();
 	AddSC_boss_garalon();
 	AddSC_boss_grand_empress_shekzeer();
-	AddSC_boss_imperial_vizier_zorlok();
-	AddSC_boss_wind_lord_meljarak();
+	AddSC_boss_zorlok();
+	AddSC_boss_meljarak();
 	
     AddSC_instance_temple_of_jade_serpent();        // Temple of Jade Serpent
     AddSC_boss_wise_mari();

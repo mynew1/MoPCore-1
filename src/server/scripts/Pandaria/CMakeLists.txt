@@ -71,6 +71,7 @@ set(scripts_STAT_SRCS
   Pandaria/WanderingIsland/WanderingIsland_South.cpp
   
   Pandaria/HeartofFear/heart_of_fear.h
+  Pandaria/HeartofFear/heart_of_fear.cpp
   Pandaria/HeartofFear/instance_heart_of_fear.cpp
   Pandaria/HeartofFear/boss_ambershaper_unsok.cpp
   Pandaria/HeartofFear/boss_blade_lord_tayak.cpp

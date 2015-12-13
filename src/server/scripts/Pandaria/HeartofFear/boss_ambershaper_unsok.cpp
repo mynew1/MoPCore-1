@@ -16,6 +16,8 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+//NOT ACTUALLY SCRIPTED.
+
 #include "ScriptMgr.h"
 #include "ScriptedCreature.h"
 
