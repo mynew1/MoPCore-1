@@ -149,9 +149,115 @@ class spell_voodoo : public SpellScriptLoader
             return new spell_voodoo_SpellScript();
         }
 };
+enum BbladeCultist
+{
+	SPELL_INCINER = 79938,
+	SPELL_SUMMIMP = 11939,
+	SPELL_IMMOL = 11962,
+
+	SPELL_FELBLOOD = 80174,
+	SPELL_INFUSED = 84325,
+
+	SAY_FLEE = 0 // 15%
+};
+
+// Burning Blade Cultist - 3199.
+class npc_bblade_cultist : public CreatureScript
+{
+public:
+	npc_bblade_cultist() : CreatureScript("npc_bblade_cultist") { }
+
+	struct npc_bblade_cultistAI : public ScriptedAI
+	{
+		npc_bblade_cultistAI(Creature* creature) : ScriptedAI(creature) { }
+
+		uint32 IncinerateTimer;
+		uint32 ImmolateTimer;
+		bool Flee;
+
+		void Reset()
+		{
+			IncinerateTimer = urand(1000, 4000);
+			ImmolateTimer = urand(5500, 9500);
+			DoCast(me, SPELL_SUMMIMP);
+			Flee = false;
+		}
+
+		void EnterEvadeMode()
+		{
+			me->RemoveAllAuras();
+			Reset();
+			me->DeleteThreatList();
+			me->CombatStop(false);
+			me->GetMotionMaster()->MoveTargetedHome();
+		}
+
+		void JustDied(Unit* killer)
+		{
+			if (killer->HasAura(SPELL_FELBLOOD))
+			{
+				if (AuraPtr aura = killer->GetAura(SPELL_FELBLOOD))
+				{
+					if (aura->GetStackAmount() >= 5)
+					{
+						killer->RemoveAurasDueToSpell(SPELL_FELBLOOD);
+						me->AddAura(SPELL_INFUSED, killer);
+					}
+					else me->AddAura(SPELL_FELBLOOD, killer);
+				}
+			}
+			else me->AddAura(SPELL_FELBLOOD, killer);
+		}
+
+		void UpdateAI(uint32 const diff)
+		{
+			if (!UpdateVictim() || me->HasUnitState(UNIT_STATE_CASTING))
+				return;
+
+			if (!Flee && HealthBelowPct(16))
+			{
+				Talk(SAY_FLEE);
+				me->DoFleeToGetAssistance();
+				IncinerateTimer = 10000;
+				Flee = true;
+			}
+
+			if (IncinerateTimer <= diff)
+			{
+				DoCast(me->getVictim(), SPELL_INCINER);
+				IncinerateTimer = urand(3000, 6000);
+			}
+			else IncinerateTimer -= diff;
+
+			if (ImmolateTimer <= diff)
+			{
+				DoCast(me->getVictim(), SPELL_IMMOL);
+				ImmolateTimer = urand(17000, 21000);
+			}
+			else ImmolateTimer -= diff;
+
+			DoMeleeAttackIfReady();
+		}
+	};
+
+	CreatureAI* GetAI(Creature* creature) const
+	{
+		return new npc_bblade_cultistAI(creature);
+	}
+};
+
+enum Watershed // quest 25187 item 52514 spell 73817 http://www.youtube.com/watch?v=J501FKs1CgE
+{
+	// Vehicles, on boarding give credit and eject back to place.
+	WATERSHED_RAGARRAN = 39320,
+	WATERSHED_TEKLA = 39345,
+	WATERSHED_MISHA = 39346,
+	WATERSHED_ZENTAJI = 39347,
+};
 
 void AddSC_durotar()
 {
     new npc_lazy_peon();
     new spell_voodoo();
+	new npc_bblade_cultist();
 }
