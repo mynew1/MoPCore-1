@@ -747,6 +747,7 @@ void AddSC_instance_the_stonecore();
 void AddSC_the_stonecore();
 
 // Pandaria
+
 // Heart of Fear
 void AddSC_instance_heart_of_fear();
 void AddSC_heart_of_fear();
@@ -813,6 +814,16 @@ void AddSC_krasarang_wilds();
 void AddSC_jade_forest();
 void AddSC_vale_of_eternal_blossoms();
 void AddSC_kun_lai_summit();
+
+void AddSC_boss_galleon(); //Pandaria World Bosses
+void AddSC_boss_nalak();
+void AddSC_boss_oondasta();
+void AddSC_boss_ordos();
+void AddSC_boss_sha_of_anger();
+void AddSC_boss_chi_ji(); //The August Celestials
+void AddSC_boss_niuzao();
+void AddSC_boss_xuen();
+void AddSC_boss_yu_lon();
 
 void AddSC_WanderingIsland_North();
 void AddSC_WanderingIsland_East();
@@ -1633,11 +1644,15 @@ void AddPandarieScripts()
     AddSC_boss_striker_gadok();
     AddSC_boss_commander_rimok();
     AddSC_boss_raigonn();
-    AddSC_boss_sha_of_anger();                      // Pandaria World Bosses
-    AddSC_boss_galion();
-    AddSC_boss_chi_ji();
+	AddSC_boss_galleon(); //Pandaria World Bosses
     AddSC_boss_nalak();
-    AddSC_boss_ordos();
+    AddSC_boss_oondasta();
+	AddSC_boss_ordos();
+    AddSC_boss_sha_of_anger();
+	AddSC_boss_chi_ji(); //The August Celestials
+	AddSC_boss_niuzao();
+	AddSC_boss_xuen();
+	AddSC_boss_yu_lon();;
     AddSC_instance_shadopan_monastery();            // Shadopan Monastery
     AddSC_shadopan_monastery();
     AddSC_boss_gu_cloudstrike();
