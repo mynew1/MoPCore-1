@@ -758,6 +758,13 @@ void AddSC_boss_grand_empress_shekzeer();
 void AddSC_boss_zorlok();
 void AddSC_boss_meljarak();
 
+void AddSC_boss_lei_shi(); //Terrace of the Endless Spring
+void AddSC_boss_protectors_of_the_endless();
+void AddSC_boss_sha_of_fear();
+void AddSC_boss_tsulong();
+void AddSC_instance_terrace_of_endless_spring();
+void AddSC_terrace_of_endless_spring();
+
 void AddSC_instance_temple_of_jade_serpent();       // Temple of Jade Serpent
 void AddSC_boss_wise_mari();
 void AddSC_boss_lorewalker_stonestep();
@@ -1624,6 +1631,13 @@ void AddPandarieScripts()
 	AddSC_boss_zorlok();
 	AddSC_boss_meljarak();
 	
+	AddSC_boss_lei_shi(); //Terrace of the Endless Spring
+	AddSC_boss_protectors_of_the_endless();
+	AddSC_boss_sha_of_fear();
+	AddSC_boss_tsulong();
+	AddSC_instance_terrace_of_endless_spring();
+	AddSC_terrace_of_endless_spring();
+
     AddSC_instance_temple_of_jade_serpent();        // Temple of Jade Serpent
     AddSC_boss_wise_mari();
     AddSC_boss_lorewalker_stonestep();

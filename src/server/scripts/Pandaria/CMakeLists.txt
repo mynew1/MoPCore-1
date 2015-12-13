@@ -84,6 +84,14 @@ set(scripts_STAT_SRCS
   Pandaria/HeartofFear/boss_imperial_vizier_zorlok.cpp
   Pandaria/HeartofFear/boss_wind_lord_meljarak.cpp
 
+  Pandaria/TerraceOfEndlessSpring/instance_terrace_of_endless_spring.cpp
+  Pandaria/TerraceOfEndlessSpring/terrace_of_endless_spring.cpp
+  Pandaria/TerraceOfEndlessSpring/terrace_of_endless_spring.h
+  Pandaria/TerraceOfEndlessSpring/boss_protectors_of_the_endless.cpp
+  Pandaria/TerraceOfEndlessSpring/boss_tsulong.cpp
+  Pandaria/TerraceOfEndlessSpring/boss_lei_shi.cpp
+  Pandaria/TerraceOfEndlessSpring/boss_sha_of_fear.cpp
+
   Pandaria/townlong_steppes.cpp
   Pandaria/dread_wastes.cpp
   Pandaria/valley_of_the_four_winds.cpp
