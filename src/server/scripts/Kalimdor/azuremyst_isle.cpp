@@ -340,6 +340,90 @@ public:
 };
 
 /*######
+## npc_nestlewood_owlkin
+######*/
+
+enum OwlkinEvents
+{
+	EVENT_INOCULATED = 1
+};
+
+class npc_nestlewood_owlkin : public CreatureScript
+{
+public:
+	npc_nestlewood_owlkin() : CreatureScript("npc_nestlewood_owlkin") { }
+
+	struct npc_nestlewood_owlkinAI : public ScriptedAI
+	{
+		npc_nestlewood_owlkinAI(Creature* creature) : ScriptedAI(creature) { }
+
+		EventMap events;
+		Player* PlayerCaster;
+		bool IsInoculated;
+
+		void Reset()
+		{
+			PlayerCaster = NULL;
+			IsInoculated = false;
+			events.Reset();
+		}
+
+		void SpellHit(Unit* caster, const SpellInfo* spell)
+		{
+			if (spell->Id == 29528 && !IsInoculated)
+			{
+				events.ScheduleEvent(EVENT_INOCULATED, 3500);
+				if (caster->GetTypeId() == TYPEID_PLAYER)
+					PlayerCaster = caster->ToPlayer();
+				IsInoculated = true;
+			}
+		}
+
+		void UpdateAI(uint32 const diff)
+		{
+			events.Update(diff);
+
+			if (uint32 eventId = events.ExecuteEvent())
+			{
+				switch (eventId)
+				{
+				case EVENT_INOCULATED:
+				{
+					switch (urand(0, 6))
+					{
+					case 0: me->MonsterTextEmote("The Inoculated Nestlewood Owlkin didn't like what just happened.", 0, false); me->HandleEmote(EMOTE_ONESHOT_RUDE); break;
+					case 1: me->MonsterTextEmote("The Inoculated Nestlewood Owlkin looks confused.", 0, false); me->HandleEmote(EMOTE_ONESHOT_CHICKEN); break;
+					case 2: me->MonsterTextEmote("The Inoculated Nestlewood Owlkin nods appreciatively.", 0, false); me->HandleEmote(EMOTE_ONESHOT_YES); break;
+					case 3: me->MonsterTextEmote("The Inoculated Nestlewood Owlkin doesn't look like it minds the crystal's effect.", 0, false); me->HandleEmote(EMOTE_ONESHOT_WAVE); break;
+					case 4: me->MonsterTextEmote("The Inoculated Nestlewood Owlkin is agitated by the inoculation.", 0, false); me->HandleEmote(EMOTE_STATE_DANCE); break;
+					case 5: me->MonsterTextEmote("The Inoculated Nestlewood Owlkin seems disoriented.", 0, false); me->HandleEmote(EMOTE_ONESHOT_COWER); break;
+					case 6: me->MonsterTextEmote("The Inoculated Nestlewood Owlkin wanders aimlessly.", 0, false); me->HandleEmote(EMOTE_ONESHOT_JUMPLANDRUN); break;
+					default: break;
+					}
+
+					if (PlayerCaster)
+						PlayerCaster->KilledMonsterCredit(16518, 0);
+					me->UpdateEntry(16534);
+					me->DespawnOrUnsummon(8000);
+					break;
+				}
+				}
+			}
+
+			if (!UpdateVictim())
+				return;
+
+			DoMeleeAttackIfReady();
+		}
+	};
+
+	CreatureAI* GetAI(Creature* creature) const
+	{
+		return new npc_nestlewood_owlkinAI(creature);
+	}
+};
+
+/*######
 ## npc_magwin
 ######*/
 
@@ -604,15 +688,56 @@ class go_bristlelimb_cage : public GameObjectScript
             return true;
         }
 };
+/*########
+## Quest: Tree's Company - disguise spell.
+########*/
+
+class spell_tree_disguise : public SpellScriptLoader
+{
+public:
+	spell_tree_disguise() : SpellScriptLoader("spell_tree_disguise") { }
+
+	class spell_tree_disguise_SpellScript : public SpellScript
+	{
+		PrepareSpellScript(spell_tree_disguise_SpellScript);
+
+		void HandleSendEvent(SpellEffIndex effIndex)
+		{
+			PreventHitDefaultEffect(effIndex);
+
+			if (Unit* caster = GetCaster())
+			{
+				caster->SummonCreature(17318, -5087.56f, -11253.2f, 0.5225f, 6.276f, TEMPSUMMON_MANUAL_DESPAWN); // Geezle
+				if (Creature* overgrind = caster->SummonCreature(17243, -5055.514f, -11264.48f, 0.90457f, 2.744f, TEMPSUMMON_TIMED_DESPAWN, 80000)) // Engineer "Spark" Overgrind
+					overgrind->GetMotionMaster()->MovePoint(0, -5078.191f, -11253.187f, 0.662f);
+
+				caster->ToPlayer()->KilledMonsterCredit(17243, 0); // Quest credit.
+			}
+		}
+
+		void Register()
+		{
+			OnEffectHit += SpellEffectFn(spell_tree_disguise_SpellScript::HandleSendEvent, EFFECT_2, SPELL_EFFECT_SEND_EVENT);
+		}
+	};
+
+	SpellScript* GetSpellScript() const
+	{
+		return new spell_tree_disguise_SpellScript();
+	}
+};
+
 
 void AddSC_azuremyst_isle()
 {
     new npc_draenei_survivor();
     new npc_engineer_spark_overgrind();
     new npc_injured_draenei();
+	new npc_nestlewood_owlkin();
     new npc_magwin();
     new npc_death_ravager();
     new go_ravager_cage();
     new npc_stillpine_capitive();
     new go_bristlelimb_cage();
+	new spell_tree_disguise();
 }
