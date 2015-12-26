@@ -20,5 +20,9 @@ INSERT INTO `creature` (`guid`, `id`, `map`, `zoneId`, `areaId`, `spawnMask`, `p
 INSERT INTO `creature` (`guid`, `id`, `map`, `zoneId`, `areaId`, `spawnMask`, `phaseMask`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `MovementType`, `npcflag`, `npcflag2`, `unit_flags`, `unit_flags2`, `dynamicflags`, `isActive`, `protec_anti_doublet`) VALUES('356950','71161','1136','0','0','8','65535','0','0','1580.88','-5685.58','-314.636','3.7078','300','0','0','61059180','0','0','0','0','0','0','0','0',NULL);
 INSERT INTO `creature` (`guid`, `id`, `map`, `zoneId`, `areaId`, `spawnMask`, `phaseMask`, `modelid`, `equipment_id`, `position_x`, `position_y`, `position_z`, `orientation`, `spawntimesecs`, `spawndist`, `currentwaypoint`, `curhealth`, `curmana`, `MovementType`, `npcflag`, `npcflag2`, `unit_flags`, `unit_flags2`, `dynamicflags`, `isActive`, `protec_anti_doublet`) VALUES('356951','72249','1136','0','0','8','65535','0','0','1422.65','-4891.88','11.265','1.78396','300','0','0','138691568','0','0','0','0','0','0','0','0',NULL);
 
--- teleport to Soo front door
+-- teleport to Soo front door, and 4 teleports to get to all the "wings" of soo.
 INSERT INTO `game_tele` (`id`, `position_x`, `position_y`, `position_z`, `orientation`,	`map`, `name`) VALUES ('1689', '1234.6', '609.405', '320.347', '5.42783', '870', 'SiegeofOrgrimmar');
+INSERT INTO `game_tele` (`id`, `position_x`, `position_y`, `position_z`, `orientation`,	`map`, `name`) VALUES ('1690', '1441.26', '299.99', '289.201', '1.60689', '1136', 'soo1');
+INSERT INTO `game_tele` (`id`, `position_x`, `position_y`, `position_z`, `orientation`,	`map`, `name`) VALUES ('1691', '1441.01', '-5017.06', '12.012', '1.68186', '1136', 'soo2');
+INSERT INTO `game_tele` (`id`, `position_x`, `position_y`, `position_z`, `orientation`,	`map`, `name`) VALUES ('1692', '1670.15', '-4718.32', '-240.434', '5.27661', '1136', 'soo3');
+INSERT INTO `game_tele` (`id`, `position_x`, `position_y`, `position_z`, `orientation`,	`map`, `name`) VALUES ('1693', '1977.13', '-5182.84', '-271.897', '3.74508', '1136', 'soo4');
