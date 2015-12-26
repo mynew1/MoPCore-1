@@ -840,6 +840,25 @@ void AddSC_boss_niuzao();
 void AddSC_boss_xuen();
 void AddSC_boss_yu_lon();
 
+//Siege Of Orgrimmar //Added this after drinking.. may not be done right.
+void AddSC_fallen_protectors();
+void AddSC_galakras();
+void AddSC_garrosh_hellscream();
+void AddSC_general_nazgrim();
+void AddSC_immerseus();
+void AddSC_iron_juggernaut();
+void AddSC_korkron_dark_shamans();
+void AddSC_malkorok();
+void AddSC_norushen();
+void AddSC_paragons_of_the_klaxxi();
+void AddSC_sha_of_pride();
+void AddSC_siegecrafter_blackfuse();
+void AddSC_spoils_of_pandaria();
+void AddSC_thok_the_bloodthirsty();
+void AddSC_instance_siege_of_orgrimmar();
+void AddSC_siege_of_orgrimmar();
+
+
 void AddSC_WanderingIsland_North();
 void AddSC_WanderingIsland_East();
 void AddSC_WanderingIsland_West();
@@ -1699,6 +1718,24 @@ void AddPandarieScripts()
     AddSC_boss_spirit_kings();
     AddSC_boss_elegon();
     AddSC_boss_will_of_emperor();
+
+	//Siege Of Orgrimmar //Added this after drinking.. may not be done right.
+	AddSC_fallen_protectors();
+	AddSC_galakras();
+	AddSC_garrosh_hellscream();
+	AddSC_general_nazgrim();
+	AddSC_immerseus();
+	AddSC_iron_juggernaut();
+	AddSC_korkron_dark_shamans();
+	AddSC_malkorok();
+	AddSC_norushen();
+	AddSC_paragons_of_the_klaxxi();
+	AddSC_sha_of_pride();
+	AddSC_siegecrafter_blackfuse();
+	AddSC_spoils_of_pandaria();
+	AddSC_thok_the_bloodthirsty();
+	AddSC_instance_siege_of_orgrimmar();
+	AddSC_siege_of_orgrimmar();
 
 
     AddSC_townlong_steppes();

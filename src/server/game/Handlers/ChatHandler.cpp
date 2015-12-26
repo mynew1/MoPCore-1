@@ -765,138 +765,121 @@ void WorldSession::HandleEmoteOpcode(WorldPacket & recvData)
 
 namespace MoPCore
 {
-    class EmoteChatBuilder
-    {
-        public:
-            EmoteChatBuilder(Player const& player, uint32 text_emote, uint32 emote_num, Unit const* target)
-                : i_player(player), i_text_emote(text_emote), i_emote_num(emote_num), i_target(target) {}
+	class EmoteChatBuilder
+	{
+	public:
+		EmoteChatBuilder(Player const& player, uint32 text_emote, uint32 emote_num, ObjectGuid target)
+			: i_player(player), i_text_emote(text_emote), i_emote_num(emote_num), i_target(target) { }
 
-            void operator()(WorldPacket& data, LocaleConstant loc_idx)
-            {
-                ObjectGuid playerGuid = i_player.GetGUID();
-                ObjectGuid targetGuid = i_target ? i_target->GetGUID() : NULL;
+		void operator()(WorldPacket& data, LocaleConstant loc_idx)
+		{
+			ObjectGuid sender = i_player.GetGUID();
 
-                data.Initialize(SMSG_TEXT_EMOTE, 24);
-                
-                data.WriteBit(targetGuid[2]);
-                data.WriteBit(targetGuid[0]);
-                data.WriteBit(playerGuid[4]);
-                data.WriteBit(targetGuid[3]);
-                data.WriteBit(targetGuid[5]);                
-                data.WriteBit(playerGuid[6]);
-                data.WriteBit(playerGuid[0]);
-                data.WriteBit(playerGuid[2]);
-                data.WriteBit(targetGuid[1]);
-                data.WriteBit(targetGuid[4]);
-                data.WriteBit(targetGuid[7]);
-                data.WriteBit(playerGuid[5]);
-                data.WriteBit(playerGuid[3]);
-                data.WriteBit(playerGuid[1]);
-                data.WriteBit(targetGuid[6]);
-                data.WriteBit(playerGuid[7]);
-                
-                data.WriteByteSeq(playerGuid[0]);
-                data.WriteByteSeq(playerGuid[5]);
-                data.WriteByteSeq(playerGuid[6]);
-                data << int32(i_text_emote);
-                data.WriteByteSeq(playerGuid[7]);
-                data.WriteByteSeq(playerGuid[2]);
-                data << int32(i_emote_num);
-                data.WriteByteSeq(targetGuid[3]);
-                data.WriteByteSeq(targetGuid[1]);
-                data.WriteByteSeq(targetGuid[6]);
-                data.WriteByteSeq(targetGuid[2]);
-                data.WriteByteSeq(targetGuid[0]);
-                data.WriteByteSeq(playerGuid[4]);
-                data.WriteByteSeq(playerGuid[3]);
-                data.WriteByteSeq(targetGuid[7]);
-                data.WriteByteSeq(playerGuid[1]);
-                data.WriteByteSeq(targetGuid[4]);
-                data.WriteByteSeq(targetGuid[5]);
-            }
+			data.Initialize(SMSG_TEXT_EMOTE, 2 + 8 + 8 + 4 + 4);
+			data.WriteBit(sender[1]);
+			data.WriteBit(i_target[7]);
+			data.WriteBit(sender[6]);
+			data.WriteBit(i_target[5]);
+			data.WriteBit(sender[3]);
+			data.WriteGuidMask(i_target, 6, 2);
+			data.WriteBit(sender[7]);
+			data.WriteGuidMask(i_target, 0, 1);
+			data.WriteGuidMask(sender, 4, 2);
+			data.WriteGuidMask(i_target, 3, 4);
+			data.WriteGuidMask(sender, 0, 5);
 
-        private:
-            Player const& i_player;
-            uint32        i_text_emote;
-            uint32        i_emote_num;
-            Unit const*   i_target;
-    };
-}                                                           // namespace MoPCore
+			data.WriteGuidBytes(i_target, 2, 1);
+			data.WriteGuidBytes(sender, 7, 4);
+			data.WriteByteSeq(i_target[7]);
+			data.WriteGuidBytes(sender, 5, 2);
 
-void WorldSession::HandleTextEmoteOpcode(WorldPacket & recvData)
+			data << uint32(i_text_emote);
+
+			data.WriteByteSeq(sender[6]);
+			data.WriteByteSeq(i_target[0]);
+			data.WriteGuidBytes(sender, 3, 1);
+			data.WriteByteSeq(i_target[6]);
+			data.WriteByteSeq(sender[0]);
+			data.WriteGuidBytes(i_target, 3, 5, 4);
+
+			data << uint32(i_emote_num);
+		}
+
+	private:
+		Player const& i_player;
+		uint32        i_text_emote;
+		uint32        i_emote_num;
+		ObjectGuid    i_target;
+	};
+}                                                                                  // namespace MoPCore
+
+void WorldSession::HandleTextEmoteOpcode(WorldPacket& recvData)
 {
-    if (!GetPlayer()->isAlive())
-        return;
+	if (!GetPlayer()->isAlive())
+		return;
 
-    if (!GetPlayer()->CanSpeak())
-    {
-        std::string timeStr = secsToTimeString(m_muteTime - time(NULL));
-        SendNotification(GetTrinityString(LANG_WAIT_BEFORE_SPEAKING), timeStr.c_str());
-        return;
-    }
+	if (!GetPlayer()->CanSpeak())
+	{
+		std::string timeStr = secsToTimeString(m_muteTime - time(NULL));
+		SendNotification(GetTrinityString(LANG_WAIT_BEFORE_SPEAKING), timeStr.c_str());
+		return;
+	}
 
-    GetPlayer()->UpdateSpeakTime();
+	ObjectGuid guid;
+	uint32 text_emote, emoteNum;
 
-    uint32 text_emote, emoteNum;
-    ObjectGuid guid;
+	recvData >> text_emote;
+	recvData >> emoteNum;
 
-    recvData >> text_emote;
-    recvData >> emoteNum;
+	recvData.ReadGuidMask(guid, 6, 7, 3, 2, 0, 5, 1, 4);
 
-    uint8 bitsOrder[8] = { 2, 3, 0, 7, 4, 6, 5, 1 };
-    recvData.ReadBitInOrder(guid, bitsOrder);
+	recvData.ReadGuidBytes(guid, 0, 5, 1, 4, 2, 3, 7, 6);
 
-    recvData.FlushBits();
+	sScriptMgr->OnPlayerTextEmote(GetPlayer(), text_emote, emoteNum, guid);
 
-    uint8 bytesOrder[8] = { 0, 6, 5, 7, 3, 4, 1, 2 };
-    recvData.ReadBytesSeq(guid, bytesOrder);
+	EmotesTextEntry const* em = sEmotesTextStore.LookupEntry(text_emote);
+	if (!em)
+		return;
 
-    sScriptMgr->OnPlayerTextEmote(GetPlayer(), text_emote, emoteNum, guid);
+	uint32 emote_anim = em->textid;
 
-    EmotesTextEntry const* em = sEmotesTextStore.LookupEntry(text_emote);
-    if (!em)
-        return;
-
-    uint32 emote_anim = em->textid;
-
-    switch (emote_anim)
-    {
-        case EMOTE_STATE_SLEEP:
-        case EMOTE_STATE_SIT:
-        case EMOTE_STATE_KNEEL:
-        case EMOTE_ONESHOT_NONE:
-            break;
-		case EMOTE_STATE_DANCE: //Testing this
-		case EMOTE_STATE_READ:
-		     GetPlayer()->SetUInt32Value(UNIT_NPC_EMOTESTATE, emote_anim);
+	switch (emote_anim)
+	{
+	case EMOTE_STATE_SLEEP:
+	case EMOTE_STATE_SIT:
+	case EMOTE_STATE_KNEEL:
+	case EMOTE_ONESHOT_NONE:
+		break;
+	case EMOTE_STATE_DANCE:
+	case EMOTE_STATE_READ:
+		GetPlayer()->SetUInt32Value(UNIT_NPC_EMOTESTATE, emote_anim);
+		break;
+	default:
+		// Only allow text-emotes for "dead" entities (feign death included)
+		if (GetPlayer()->HasUnitState(UNIT_STATE_DIED))
 			break;
+		GetPlayer()->HandleEmoteCommand(emote_anim);
+		break;
+	}
 
-        default:
-            // Only allow text-emotes for "dead" entities (feign death included)
-            if (GetPlayer()->HasUnitState(UNIT_STATE_DIED))
-                break;
-             GetPlayer()->HandleEmoteCommand(emote_anim);
-             break;
-    }
-
-    Unit* unit = ObjectAccessor::GetUnit(*_player, guid);
+	Unit* unit = ObjectAccessor::GetUnit(*_player, guid);
 
 	CellCoord p = MoPCore::ComputeCellCoord(GetPlayer()->GetPositionX(), GetPlayer()->GetPositionY());
 
-    Cell cell(p);
-    cell.SetNoCreate();
+	Cell cell(p);
+	cell.SetNoCreate();
 
-	MoPCore::EmoteChatBuilder emote_builder(*GetPlayer(), emote_anim, text_emote, unit);
+	MoPCore::EmoteChatBuilder emote_builder(*GetPlayer(), text_emote, emoteNum, guid);
 	MoPCore::LocalizedPacketDo<MoPCore::EmoteChatBuilder > emote_do(emote_builder);
 	MoPCore::PlayerDistWorker<MoPCore::LocalizedPacketDo<MoPCore::EmoteChatBuilder > > emote_worker(GetPlayer(), sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_TEXTEMOTE), emote_do);
 	TypeContainerVisitor<MoPCore::PlayerDistWorker<MoPCore::LocalizedPacketDo<MoPCore::EmoteChatBuilder> >, WorldTypeMapContainer> message(emote_worker);
-    cell.Visit(p, message, *GetPlayer()->GetMap(), *GetPlayer(), sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_TEXTEMOTE));
+	cell.Visit(p, message, *GetPlayer()->GetMap(), *GetPlayer(), sWorld->getFloatConfig(CONFIG_LISTEN_RANGE_TEXTEMOTE));
 
-    GetPlayer()->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_DO_EMOTE, text_emote, 0, 0, unit);
+	GetPlayer()->UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_DO_EMOTE, text_emote, 0, 0, unit);
 
-    //Send scripted event call
-    if (unit && unit->GetTypeId() == TYPEID_UNIT && ((Creature*)unit)->AI())
-        ((Creature*)unit)->AI()->ReceiveEmote(GetPlayer(), text_emote);
+	//Send scripted event call
+	if (unit && unit->GetTypeId() == TYPEID_UNIT && ((Creature*)unit)->AI())
+		((Creature*)unit)->AI()->ReceiveEmote(GetPlayer(), text_emote);
 }
 
 void WorldSession::HandleChatIgnoredOpcode(WorldPacket& recvData)

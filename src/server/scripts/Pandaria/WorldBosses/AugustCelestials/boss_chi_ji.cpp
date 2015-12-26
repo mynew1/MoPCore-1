@@ -31,7 +31,7 @@ enum Spells
 
     // NPCs
     SPELL_FIRESTORM_AURA    = 144463, // Per. dmg. npc aura. Triggers 144462 dmg. each 2s.
-    SPELL_BEACON_OF_HOPE_A  = 144474, // Per. dmg. decrease npc aura. Triggers 144475 each 1s, 10y radius.
+    SPELL_BEACON_OF_HOPE_A  = 144474, // Per. dmg. decrease npc aura. Triggers 144475 each 1s, 10y radius. this is the beacon.
     SPELL_BURNING_NOVA_A    = 144493, // Per. dmg. npc aura. Triggers 144494 dmg. each 2s, 4y radius.
 };
 
@@ -136,10 +136,13 @@ class boss_chi_ji : public CreatureScript
                         summon->GetMotionMaster()->MoveRandom(20.0f);
                         break;
 
-                    case NPC_BEACON_OF_HOPE:
-                        summon->AddAura(SPELL_BEACON_OF_HOPE_A, summon);
-                        summon->SetReactState(REACT_PASSIVE);
-                        break;
+						case NPC_BEACON_OF_HOPE:
+                     summon->AddAura(SPELL_BEACON_OF_HOPE_A, summon);
+                     summon->SetReactState(REACT_PASSIVE);
+                     break;
+
+
+					
 
                     case NPC_CHILD_OF_CHIJI:
                     {
@@ -180,7 +183,7 @@ class boss_chi_ji : public CreatureScript
                     switch (eventId)
                     {
                         case EVENT_INSPIRING_SONG:
-                            DoCast(me, SPELL_INSPIRING_SONG);
+                            DoCast(me, SPELL_INSPIRING_SONG );
                             _events.ScheduleEvent(EVENT_INSPIRING_SONG, urand(35000, 40000));
                             break;
 
@@ -189,9 +192,9 @@ class boss_chi_ji : public CreatureScript
                             _events.ScheduleEvent(EVENT_FIRESTORM, urand(43000, 47000));
                             break;
 
-                        case EVENT_BEACON_OF_HOPE:
+                        case EVENT_BEACON_OF_HOPE: 
                             Talk(SAY_BEACON_HOPE);
-                            if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, NonTankTargetSelector(me)))
+							if (Unit* target = SelectTarget(SELECT_TARGET_RANDOM, 0, 0.0f, true))
                                 DoCast(target, SPELL_BEACON_OF_HOPE_S);
                             _events.ScheduleEvent(EVENT_BLAZING_SONG, urand(8000, 9500));
                             _events.ScheduleEvent(EVENT_BEACON_OF_HOPE, urand(70000, 75000)); // 65 + Blazing Song delay.
