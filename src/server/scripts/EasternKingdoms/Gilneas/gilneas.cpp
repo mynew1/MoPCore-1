@@ -5032,7 +5032,7 @@ public:
 /*######
 ## npc_krennan_aranas
 ######*/
-class npc_krennan_aranas : public CreatureScript
+class npc_krennan_aranas : public CreatureScript // figure out this creature ID!
 {
 public:
 	npc_krennan_aranas() : CreatureScript("npc_krennan_aranas") { }
