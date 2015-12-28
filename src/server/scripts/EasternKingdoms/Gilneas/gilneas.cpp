@@ -2306,24 +2306,24 @@ public:
 /*######
 ## npc_lord_darius_crowley_c2
 ######*/
-class npc_lord_darius_crowley_c2 : public CreatureScript
-{
-public:
-	npc_lord_darius_crowley_c2() : CreatureScript("npc_lord_darius_crowley_c2") { }
+//class npc_lord_darius_crowley_c2 : public CreatureScript
+//{
+//public:
+//	npc_lord_darius_crowley_c2() : CreatureScript("npc_lord_darius_crowley_c2") { }
 
-	bool OnQuestAccept(Player* player, Creature* creature, Quest const*_Quest)
-	{
-		if (_Quest->GetQuestId() == QUEST_SACRIFICES)
-		{
-			if (Creature *horse = player->SummonCreature(35231, player->GetPositionX(), player->GetPositionY(), player->GetPositionZ(), player->GetOrientation(), TEMPSUMMON_MANUAL_DESPAWN))
-			{
-				player->CastCustomSpell(VEHICLE_SPELL_RIDE_HARDCODED, SPELLVALUE_BASE_POINT0, 1, horse, false);
-				CAST_AI(npc_escortAI, (horse->AI()))->Start(false, true, player->GetGUID(), _Quest);
-			}
-		}
-		return true;
-	}
-};
+//	bool OnQuestAccept(Player* player, Creature* creature, Quest const*_Quest)
+//	{
+	//	if (_Quest->GetQuestId() == QUEST_SACRIFICES)
+	//	{
+		//	if (Creature *horse = player->SummonCreature(44429, player->GetPositionX(), player->GetPositionY(), player->GetPositionZ(), player->GetOrientation(), TEMPSUMMON_MANUAL_DESPAWN))
+		//	{//                                 changed this^ from 35231 to 44429.
+		//		player->CastCustomSpell(VEHICLE_SPELL_RIDE_HARDCODED, SPELLVALUE_BASE_POINT0, 1, horse, false);
+		//		CAST_AI(npc_escortAI, (horse->AI()))->Start(false, true, player->GetGUID(), _Quest);
+	//		}
+	//	}
+	//	return true;
+	//}
+//};
 
 /*######
 ## npc_crowley_horse
@@ -2870,7 +2870,7 @@ public:
 		{
 			if (Creature* forsaken = player->SummonCreature(NPC_FORSAKEN_ASSASSIN, -1918.782104f, 2393.562988f, 30.192066f, 6.265f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 6000))
 			{
-				forsaken->SetPhaseMask(1, true);
+				forsaken->SetPhaseMask(6, true);
 				forsaken->SetVisible(true);
 				forsaken->setFaction(14);
 				forsaken->AI()->Talk(NPC_FORSAKEN_ASSASSIN_SAY);
@@ -3423,6 +3423,7 @@ public:
 		}
 	};
 };
+
 
 /*######
 ## Quest Save the Children! 14368
@@ -4182,24 +4183,39 @@ public:
 
 class npc_gwen_armstead : public CreatureScript
 {
-public:
-	npc_gwen_armstead() : CreatureScript("npc_gwen_armstead") { }
+public: //a test for phasing zones after cata zone complete!
+ npc_gwen_armstead() : CreatureScript("npc_gwen_armstead") { }
 
-	bool OnQuestAccept(Player* player, Creature* /*creature*/, Quest const* quest)
-	{
-		if (quest->GetQuestId() == QUEST_TO_GREYMANE_MANOR)
-		{
-			if (Creature* horse = player->SummonCreature(NPC_SWIFT_MOUNTAIN_HORSE, player->GetPositionX(), player->GetPositionY(), player->GetPositionZ(), player->GetOrientation(), TEMPSUMMON_MANUAL_DESPAWN))
-			{
-				player->EnterVehicle(horse, 0);
+ bool OnQuestAccept(Player* player, Creature* creature, Quest const* quest)
+ {
+	 if (quest->GetQuestId() == 14465)
+	 {
+		 std::set<uint32> terrainswap;
+		 std::set<uint32> phaseId;
+		 terrainswap.insert(654);
+		 phaseId.insert(1);
+		 player->GetSession()->SendSetPhaseShift(phaseId, terrainswap);
+		 player->SaveToDB();
+	 }
+
+	 return true;
+
+	//bool OnQuestAccept(Player* player, Creature* /*creature*/, Quest const* quest)
+	//{
+	//	if (quest->GetQuestId() == QUEST_TO_GREYMANE_MANOR)
+		//{
+		
+			//if (Creature* horse = player->SummonCreature(NPC_SWIFT_MOUNTAIN_HORSE, player->GetPositionX(), player->GetPositionY(), player->GetPositionZ(), player->GetOrientation(), TEMPSUMMON_MANUAL_DESPAWN))
+		//	{
+				//player->EnterVehicle(horse, 0);
 				//player->SetPhaseMask(0x01, true);
-				player->CastCustomSpell(VEHICLE_SPELL_RIDE_HARDCODED, SPELLVALUE_BASE_POINT0, 1, horse, false);
-				CAST_AI(npc_escortAI, (horse->AI()))->Start(false, true, player->GetGUID(), quest);
-			}
-		}
-		return true;
+				//player->CastCustomSpell(VEHICLE_SPELL_RIDE_HARDCODED, SPELLVALUE_BASE_POINT0, 1, horse, false);
+			//CAST_AI(npc_escortAI, (horse->AI()))->Start(false, true, player->GetGUID(), quest);
+		//	}
+		//}
+		//return true;
 	}
-};
+ };
 
 /*######
 ## Quest The King's Observatory 14466, Alas, Gilneas! 14467
@@ -6180,6 +6196,7 @@ public:
 	}
 };
 
+
 /*######
 ## npc_lord_godfrey_map
 ######*/
@@ -6202,7 +6219,6 @@ public:
 		return true;
 	}
 };
-
 class npc_gilneas_tremors_credit : public CreatureScript
 {
 public:
@@ -6284,6 +6300,7 @@ void AddSC_gilneas()
 	new npc_lorna_crowley_p4();
 	new npc_bloodfang_lurker();
 	new npc_gilnean_mastiff();
+	
 	//new npc_bloodfang_worgen();
 	new npc_frightened_citizen();
 	new npc_gilnean_royal_guard();
@@ -6300,7 +6317,7 @@ void AddSC_gilneas()
 	new npc_king_greymanes_horse();
 	new npc_krennan_aranas_c2();
 	new npc_bloodfang_stalker_c1();
-	new npc_lord_darius_crowley_c2();
+	//new npc_lord_darius_crowley_c2();
 	new npc_trigger_event_c3();
 	new npc_trigger_event_first_c3();
 	new npc_king_genn_greymane_c2();
@@ -6317,7 +6334,7 @@ void AddSC_gilneas()
 	new npc_prince_liam_greymane();
 	//new spell_rescue_noyade();
 	new spell_round_up_horse();
-	new npc_gwen_armstead();
+	//new npc_gwen_armstead();
 	new npc_swift_mountain_horse();
 	new npc_king_genn_greymane_c3();
 	new npc_chance_the_cat();
