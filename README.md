@@ -5,6 +5,10 @@
   
 
  The plan is to add every available script for every instance, new scripts will be added one at a time to prevent massive amounts of errors.
+ 
+ Also making the game "playable" slowly"
+
+ 
 
  May or may not function properly.
  
