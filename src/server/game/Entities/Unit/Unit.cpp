@@ -1859,15 +1859,15 @@ void Unit::HandleEmote(uint32 emote_id)
 				if (GetTypeId() == TYPEID_PLAYER)
 				{
 					// When a player types in the same /read emote again, he cancels it. Acts like a toggle.
-					if (GetStoredEmoteState() && GetStoredEmoteState() == emote_id && emote_id == EMOTE_STATE_READ)
+				//	if (GetStoredEmoteState() && GetStoredEmoteState() == emote_id && emote_id == EMOTE_STATE_READ)
 					{
 						HandleEmoteState(EMOTE_ONESHOT_NONE);
 						SetStoredEmoteState(EMOTE_ONESHOT_NONE);
 					}
-					else
+					//else
 					{
 						HandleEmoteState(emote_id);
-						if (emote_id == EMOTE_STATE_READ || emote_id == EMOTE_STATE_DANCE)
+					//	if (emote_id == EMOTE_STATE_READ || emote_id == EMOTE_STATE_DANCE)
 							SetStoredEmoteState(emote_id);
 					}
 				}

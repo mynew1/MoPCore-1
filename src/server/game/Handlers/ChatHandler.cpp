@@ -741,26 +741,26 @@ void WorldSession::HandleAddonMessagechatOpcode(WorldPacket& recvData)
     }
 }
 
-void WorldSession::HandleEmoteOpcode(WorldPacket & recvData)
+void WorldSession::HandleEmoteOpcode(WorldPacket& recvData)
 {
-    if (!GetPlayer()->isAlive() || GetPlayer()->HasUnitState(UNIT_STATE_DIED))
-        return;
+	if (!GetPlayer()->isAlive() || GetPlayer()->HasUnitState(UNIT_STATE_DIED))
+		return;
 
-    if (!GetPlayer()->CanSpeak())
-    {
-        std::string timeStr = secsToTimeString(m_muteTime - time(NULL));
-        SendNotification(GetTrinityString(LANG_WAIT_BEFORE_SPEAKING), timeStr.c_str());
-        recvData.rfinish(); // Prevent warnings
-        return;
-    }
+	if (!GetPlayer()->CanSpeak())
+	{
+		std::string timeStr = secsToTimeString(m_muteTime - time(NULL));
+		SendNotification(GetTrinityString(LANG_WAIT_BEFORE_SPEAKING), timeStr.c_str());
+		recvData.rfinish(); // Prevent warnings
+		return;
+	}
 
-    GetPlayer()->UpdateSpeakTime();
+	GetPlayer()->UpdateSpeakTime();
 
-    uint32 emote;
-    recvData >> emote;
+	uint32 emote;
+	recvData >> emote;
 
-    sScriptMgr->OnPlayerEmote(GetPlayer(), emote);
-    GetPlayer()->HandleEmoteCommand(emote);
+	sScriptMgr->OnPlayerEmote(GetPlayer(), emote);
+	GetPlayer()->HandleEmote(emote);
 }
 
 namespace MoPCore
@@ -851,7 +851,7 @@ void WorldSession::HandleTextEmoteOpcode(WorldPacket& recvData)
 	case EMOTE_ONESHOT_NONE:
 		break;
 	case EMOTE_STATE_DANCE:
-	case EMOTE_STATE_READ:
+	//case EMOTE_STATE_READ:
 		GetPlayer()->SetUInt32Value(UNIT_NPC_EMOTESTATE, emote_anim);
 		break;
 	default:

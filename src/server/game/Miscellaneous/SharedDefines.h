@@ -2367,7 +2367,7 @@ enum Emote
     EMOTE_ONESHOT_SNIFF                          = 479,
     EMOTE_ONESHOT_DRAGONSTOMP                    = 480,
     EMOTE_ONESHOT_KNOCKDOWN                      = 482,
-    EMOTE_STATE_READ                             = 483,
+    //EMOTE_STATE_READ                             = 483,
     EMOTE_ONESHOT_FLYEMOTETALK                   = 485,
     EMOTE_STATE_READ_ALLOWMOVEMENT               = 492,
     EMOTE_STATE_CUSTOM_SPELL_06                  = 498,
