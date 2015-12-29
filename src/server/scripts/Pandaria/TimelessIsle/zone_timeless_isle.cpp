@@ -125,101 +125,172 @@ public:
 class go_time_lost_shrine_ti : public GameObjectScript
 {
 public:
-    go_time_lost_shrine_ti() : GameObjectScript("go_time_lost_shrine_ti") { }
+	go_time_lost_shrine_ti() : GameObjectScript("go_time_lost_shrine_ssti") { }//disabled for now
 
-    struct go_time_lost_shrine_tiAI : public GameObjectAI
-    {
-        go_time_lost_shrine_tiAI(GameObject* go) : GameObjectAI(go) { }
+	struct go_time_lost_shrine_tiAI : public GameObjectAI
+	{
+		go_time_lost_shrine_tiAI(GameObject* go) : GameObjectAI(go) { }
 
-        bool OnGossipHello(Player* player, GameObject* go)
-        {
-        	player->CLOSE_GOSSIP_MENU();
+		bool onclick(Player* player, GameObject* go) 
+		{
+			
 
-        	if (used == false)
-        	{
-                go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_INTERACT_COND);
+			if (used == false)
+			{
+				go->SetFlag(GAMEOBJECT_FLAGS, GO_FLAG_INTERACT_COND);
 
-            	used = true;
+				used = true;
 
-        		Choice = urand(1, 5);
-        	}
+				Choice = urand(1, 5);
+			}
 
-        	if (player->HasAura(SPELL_FORTITUDE_OF_NIUZAO))
-        		player->RemoveAurasDueToSpell(SPELL_FORTITUDE_OF_NIUZAO);
+			if (player->HasAura(SPELL_FORTITUDE_OF_NIUZAO))
+				player->RemoveAurasDueToSpell(SPELL_FORTITUDE_OF_NIUZAO);
 
-        	if (player->HasAura(SPELL_WISDOM_OF_YULON))
-            	player->RemoveAurasDueToSpell(SPELL_WISDOM_OF_YULON);
+			if (player->HasAura(SPELL_WISDOM_OF_YULON))
+				player->RemoveAurasDueToSpell(SPELL_WISDOM_OF_YULON);
 
-        	if (player->HasAura(SPELL_CHI_JIS_HOPE))
-            	player->RemoveAurasDueToSpell(SPELL_CHI_JIS_HOPE);
+			if (player->HasAura(SPELL_CHI_JIS_HOPE))
+				player->RemoveAurasDueToSpell(SPELL_CHI_JIS_HOPE);
 
-        	if (player->HasAura(SPELL_XUENS_STRENGTH))
-            	player->RemoveAurasDueToSpell(SPELL_XUENS_STRENGTH);
+			if (player->HasAura(SPELL_XUENS_STRENGTH))
+				player->RemoveAurasDueToSpell(SPELL_XUENS_STRENGTH);
 
-        	Creature* trigger = go->FindNearestCreature(NPC_TIME_LOST_SHRINE_TRIGGER, 5.0f); // An npc needs to be spawned in the same coordinates for the shrine
+			Creature* trigger = go->FindNearestCreature(NPC_TIME_LOST_SHRINE_TRIGGER, 5.0f); // An npc needs to be spawned in the same coordinates for the shrine
 
-    	if (Choice == 1)
-            {
-            	go->CastSpell(player, SPELL_FORTITUDE_OF_NIUZAO);
-            	trigger->AI()->Talk(SAY_BLESSING_NIUZAO, player->GetGUID());
-            }
+			if (Choice == 1)
+			{
+				player->CastSpell(player, SPELL_FORTITUDE_OF_NIUZAO, true);
+				trigger->AI()->Talk(SAY_BLESSING_NIUZAO, player->GetGUID());
+			}
 
-        	if (Choice == 2)
-        	{
-            	go->CastSpell(player, SPELL_WISDOM_OF_YULON);
-            	trigger->AI()->Talk(SAY_BLESSING_YULON, player->GetGUID());
-            }
+			if (Choice == 2)
+			{
+				player->CastSpell(player, SPELL_WISDOM_OF_YULON, true);
+				trigger->AI()->Talk(SAY_BLESSING_YULON, player->GetGUID());
+			}
 
-            if (Choice == 3)
-            {
-            	go->CastSpell(player, SPELL_CHI_JIS_HOPE);
-            	trigger->AI()->Talk(SAY_BLESSING_CHI_JI, player->GetGUID());
-        	}
+			if (Choice == 3)
+			{
+				player->CastSpell(player, SPELL_CHI_JIS_HOPE, true);
+				trigger->AI()->Talk(SAY_BLESSING_CHI_JI, player->GetGUID());
+			}
 
-        	if (Choice == 4)
-        	{
-        		go->CastSpell(player, SPELL_XUENS_STRENGTH);
-        		trigger->AI()->Talk(SAY_BLESSING_XUEN, player->GetGUID());
-        	}
+			if (Choice == 4)
+			{
+				player->CastSpell(player, SPELL_XUENS_STRENGTH, true);
+				trigger->AI()->Talk(SAY_BLESSING_XUEN, player->GetGUID());
+			}
 
-        	if (Choice == 5)
-        	{
-            	go->CastSpell(player, SPELL_ORDOS_BURNING_SACRIFICE);
-            	trigger->AI()->Talk(SAY_CORRUPTION_ORDOS, player->GetGUID());
-            }
+			if (Choice == 5)
+			{
+				player->CastSpell(player, SPELL_ORDOS_BURNING_SACRIFICE, true);
+				trigger->AI()->Talk(SAY_CORRUPTION_ORDOS, player->GetGUID());
+			}
 
-          BackToUse = 300000;
+			BackToUse = 300000;
 
-            return true;
-        }
+			return true;
+		}
 
 		void UpdateAI(uint32 diff) override
-        {
-            if (used == false)
-                return;
+		{
+			if (used == false)
+			return;
 
-            if (BackToUse <= diff)
-            {
+			if (BackToUse <= diff)
+			{
 				go->RemoveFlag(GAMEOBJECT_FLAGS, GO_FLAG_INTERACT_COND);
-                used = false; // this will stop/prevent it from updating it
-            }
+				used = false; // this will stop/prevent it from updating it
+			}
 
-            else
-            	BackToUse -= diff;
-        }
+			else
+				BackToUse -= diff;
+		}
 
-    private:
-    	uint32 BackToUse;
+	private:
+		uint32 BackToUse;
 
-    	uint8 Choice;
+		uint8 Choice;
 
-    	bool used;
-    };
+		bool used;
+	};
 
-	GameObjectAI* GetAI(GameObject* go) const override
-    {
-        return new go_time_lost_shrine_tiAI(go);
-    }
+	GameObjectAI* GetAI(GameObject* go) const 
+	{
+		return new go_time_lost_shrine_tiAI(go);
+	}
+};
+
+
+class go_timelost_test : public GameObjectScript
+{
+public:
+	go_timelost_test() : GameObjectScript("go_time_lost_shrine_ti") { }
+
+	bool OnGossipHello(Player* player, GameObject* go)
+	{
+
+		
+			Choice = urand(1, 5);
+		
+		if (player->HasAura(SPELL_FORTITUDE_OF_NIUZAO))
+			player->RemoveAurasDueToSpell(SPELL_FORTITUDE_OF_NIUZAO);
+
+		if (player->HasAura(SPELL_WISDOM_OF_YULON))
+			player->RemoveAurasDueToSpell(SPELL_WISDOM_OF_YULON);
+
+		if (player->HasAura(SPELL_CHI_JIS_HOPE))
+			player->RemoveAurasDueToSpell(SPELL_CHI_JIS_HOPE);
+
+		if (player->HasAura(SPELL_XUENS_STRENGTH))
+			player->RemoveAurasDueToSpell(SPELL_XUENS_STRENGTH);
+
+		//return false; stops the code bellow from functioning.
+		//Creature* trigger = player->FindNearestCreature(NPC_TIME_LOST_SHRINE_TRIGGER, 5.0f); // An npc needs to be spawned in the same coordinates for the shrine
+
+		
+		if (Choice == 1)
+		{
+			player->CastSpell(player, SPELL_FORTITUDE_OF_NIUZAO, true);
+			//trigger->AI()->Talk(SAY_BLESSING_NIUZAO, player->GetGUID());
+		}
+
+		if (Choice == 2)
+		{
+			player->CastSpell(player, SPELL_WISDOM_OF_YULON, true);
+			//trigger->AI()->Talk(SAY_BLESSING_YULON, player->GetGUID());
+		}
+
+		if (Choice == 3)
+		{
+			player->CastSpell(player, SPELL_CHI_JIS_HOPE, true);
+			//trigger->AI()->Talk(SAY_BLESSING_CHI_JI, player->GetGUID());
+		}
+
+		if (Choice == 4)
+		{
+			player->CastSpell(player, SPELL_XUENS_STRENGTH, true);
+			//trigger->AI()->Talk(SAY_BLESSING_XUEN, player->GetGUID());
+		}
+
+		if (Choice == 5)
+		{
+			player->CastSpell(player, SPELL_ORDOS_BURNING_SACRIFICE, true);
+			//trigger->AI()->Talk(SAY_CORRUPTION_ORDOS, player->GetGUID());
+		}
+
+
+		return true;
+
+	}
+
+private:
+
+
+	uint8 Choice;
+
+	bool used;
 };
 
 class go_gleaming_crane_statue_ti : public GameObjectScript
@@ -388,4 +459,6 @@ void AddSC_zone_timeless_isle()
     new spell_timeless_isle_crane_wings();
     new spell_timeless_isle_cauterize();
     new spell_timeless_isle_burning_fury();
+	new go_timelost_test();
+	
 }
