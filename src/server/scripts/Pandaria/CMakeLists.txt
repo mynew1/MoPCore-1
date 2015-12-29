@@ -125,6 +125,10 @@ set(scripts_STAT_SRCS
   Pandaria/SiegeOfOrgrimmar/boss_siegecrafter_blackfuse.cpp
   Pandaria/SiegeOfOrgrimmar/boss_paragons_of_the_klaxxi.cpp
   Pandaria/SiegeOfOrgrimmar/boss_garrosh_hellscream.cpp
+
+  Pandaria/TimelessIsle/timeless_isle.cpp
+  Pandaria/TimelessIsle/timeless_isle.h
+  Pandaria/TimelessIsle/zone_timeless_isle.cpp
 )
 
 message("  -> Prepared: Pandaria")
