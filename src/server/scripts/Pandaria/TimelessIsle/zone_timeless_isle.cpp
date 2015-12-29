@@ -274,6 +274,8 @@ public:
                 {
                 	player->CastSpell(player, 144385, true);
                 	used = false;
+
+
                 }
             }
 

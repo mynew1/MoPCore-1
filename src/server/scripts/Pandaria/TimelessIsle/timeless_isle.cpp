@@ -1844,25 +1844,34 @@ public:
     }
 };
 
-void AddSC_timeless_isle()
-{
-	new npc_cinderfall();
-	new npc_huolon();
-	new npc_imperial_python();
-	new npc_emerald_gander();
-	new npc_golganarr();
-	new npc_watcher_osu();
-	new npc_tsavoka();
-	new npc_spirit_of_jadefire();
-	new npc_monstrous_spineclaw();
-	new npc_great_turtle_furyshell();
-	new npc_ironfur_steelhorn();
-//	new npc_flintlord_gairan();
-//    new npc_archiereus_of_flame();
-    new npc_champion_of_the_black_flame();
-    new npc_chelon();
-    new npc_cranegnasher();
-    new npc_jakur_of_ordon();
-    new npc_bufo();
-    new npc_evermaw();
-}
+
+	 
+
+
+
+
+
+	void AddSC_timeless_isle()
+	{
+		new npc_cinderfall();
+		new npc_huolon();
+		new npc_imperial_python();
+		new npc_emerald_gander();
+		new npc_golganarr();
+		new npc_watcher_osu();
+		new npc_tsavoka();
+		new npc_spirit_of_jadefire();
+		new npc_monstrous_spineclaw();
+		new npc_great_turtle_furyshell();
+		new npc_ironfur_steelhorn();
+		//	new npc_flintlord_gairan();
+		//    new npc_archiereus_of_flame();
+		new npc_champion_of_the_black_flame();
+		new npc_chelon();
+		new npc_cranegnasher();
+		new npc_jakur_of_ordon();
+		new npc_bufo();
+		new npc_evermaw();
+		
+	}
+

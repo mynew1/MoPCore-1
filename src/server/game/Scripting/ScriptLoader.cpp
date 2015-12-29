@@ -858,7 +858,11 @@ void AddSC_thok_the_bloodthirsty();
 void AddSC_instance_siege_of_orgrimmar();
 void AddSC_siege_of_orgrimmar();
 
+// Timeless Isle
+void AddSC_zone_timeless_isle();
+void AddSC_timeless_isle();
 
+//Wandering Isle
 void AddSC_WanderingIsland_North();
 void AddSC_WanderingIsland_East();
 void AddSC_WanderingIsland_West();
@@ -1745,6 +1749,10 @@ void AddPandarieScripts()
     AddSC_jade_forest();
     AddSC_kun_lai_summit();
     AddSC_vale_of_eternal_blossoms();
+
+	// Timeless Isle
+	AddSC_zone_timeless_isle();
+	AddSC_timeless_isle();
 
     AddSC_WanderingIsland_North();
     AddSC_WanderingIsland_East();
