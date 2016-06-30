@@ -741,7 +741,7 @@ void WorldSession::HandleAddonMessagechatOpcode(WorldPacket& recvData)
     }
 }
 
-void WorldSession::HandleEmoteOpcode(WorldPacket& recvData)
+void  WorldSession::HandleEmoteOpcode(WorldPacket& recvData)
 {
 	if (!GetPlayer()->isAlive() || GetPlayer()->HasUnitState(UNIT_STATE_DIED))
 		return;
@@ -762,6 +762,7 @@ void WorldSession::HandleEmoteOpcode(WorldPacket& recvData)
 	sScriptMgr->OnPlayerEmote(GetPlayer(), emote);
 	GetPlayer()->HandleEmote(emote);
 }
+
 
 namespace MoPCore
 {
