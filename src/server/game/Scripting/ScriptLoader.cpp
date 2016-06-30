@@ -770,6 +770,7 @@ void AddSC_boss_horridon();
 void AddSC_boss_jin_rokh_breaker();
 void AddSC_boss_megaera();
 void AddSC_boss_tortos();
+void AddSC_boss_ji_kun();
 void AddSC_instance_throne_of_thunder();
 
 
@@ -1674,6 +1675,7 @@ void AddPandarieScripts()
 	AddSC_boss_jin_rokh_breaker();
 	AddSC_boss_megaera();
 	AddSC_boss_tortos();
+	AddSC_boss_ji_kun();
 	AddSC_instance_throne_of_thunder();
 
     AddSC_instance_temple_of_jade_serpent();        // Temple of Jade Serpent

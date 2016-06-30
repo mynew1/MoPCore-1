@@ -99,6 +99,7 @@ set(scripts_STAT_SRCS
   Pandaria/ThroneOfThunder/boss_tortos.cpp
   Pandaria/ThroneOfThunder/boss_council_of_elders.cpp
   Pandaria/ThroneOfThunder/boss_megaera.cpp
+  Pandaria/ThroneOfThunder/boss_ji_kun.cpp
 
   Pandaria/townlong_steppes.cpp
   Pandaria/dread_wastes.cpp

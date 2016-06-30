@@ -30,7 +30,8 @@ enum Data
 	DATA_TWIN_CONSORTS_EVENT         = 10,
     DATA_LEI_SHEN_EVENT              = 11,
 
-    DATA_RA_DEN_EVENT                = 12  // Heroic only.
+    DATA_RA_DEN_EVENT                = 12,  // Heroic only.
+	
 };
 
 // GUID retrieval
