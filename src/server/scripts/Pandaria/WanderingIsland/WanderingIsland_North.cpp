@@ -160,6 +160,10 @@ public:
         }
     };
 };
+enum Trainee
+{
+	TRAINEE_DESPAWN_HACKFIX = 114967
+};
 
 class mob_tushui_trainee : public CreatureScript
 {
@@ -171,95 +175,103 @@ class mob_tushui_trainee : public CreatureScript
             return new mob_tushui_trainee_AI(creature);
         }
 
-        struct mob_tushui_trainee_AI : public ScriptedAI
-        {
-            mob_tushui_trainee_AI(Creature* creature) : ScriptedAI(creature)
-            {
-            }
+		struct mob_tushui_trainee_AI : public ScriptedAI
+		{
+			mob_tushui_trainee_AI(Creature* creature) : ScriptedAI(creature)
+			{
+			}
 
-            bool isInCombat;
-            uint64 playerGUID;
-            uint32 punch1;
-            uint32 punch2;
-            uint32 punch3;
+			bool isInCombat;
+			uint64 playerGUID;
+			uint32 punch1;
+			uint32 punch2;
+			uint32 punch3;
 
-            void Reset()
-            {
-                punch1 = 1000;
-                punch2 = 3500;
-                punch3 = 6000;
-                playerGUID = 0;
-                isInCombat = false;
-                me->SetReactState(REACT_DEFENSIVE);
-                me->setFaction(7);
-                me->SetFullHealth();
-            }
+			void Reset()
+			{
+				punch1 = 1000;
+				punch2 = 3500;
+				punch3 = 6000;
+				playerGUID = 0;
+				isInCombat = false;
+				me->SetReactState(REACT_DEFENSIVE);
+				me->setFaction(7);
+				me->SetFullHealth();
+			}
 
-            void DamageTaken(Unit* attacker, uint32& damage)
-            {
-                if (me->HealthBelowPctDamaged(16.67f, damage))
-                {
-                    me->setFaction(35);
+			void DamageTaken(Unit* attacker, uint32& damage)
+			{
+				if (me->HealthBelowPctDamaged(16.67f, damage))
+				{
+					me->setFaction(35);
 
-                    if(attacker && attacker->GetTypeId() == TYPEID_PLAYER)
-                        attacker->ToPlayer()->KilledMonsterCredit(54586, 0);
+					if (attacker && attacker->GetTypeId() == TYPEID_PLAYER)
+						attacker->ToPlayer()->KilledMonsterCredit(54586, 0);
 
-                    damage = 0;
-                    me->CombatStop();
-                    isInCombat = false;
-                    me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE);
-                    Talk(urand(0, 7));
-                    me->GetMotionMaster()->MovePoint(0, 1446.322876f, 3389.027588f, 173.782471f);
-                }
-            }
+					damage = 0;
+					me->CombatStop();
+					isInCombat = false;
+					me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE);
+					//Talk(urand(0, 7));
+					me->MonsterSay("My skills are no match for yours. I admit defeat.", LANG_UNIVERSAL, NULL);
 
-            void EnterCombat(Unit* unit)
-            {
-                isInCombat = true;
-            }
+					me->GetMotionMaster()->MovePoint(0, 1446.322876f, 3389.027588f, 173.782471f);
 
-            void JustRespawned()
-            {
-                Reset();
-            }
+				}
+			}
 
-            void UpdateAI(const uint32 diff)
-            {
-                if (isInCombat)
-                {
-                    DoMeleeAttackIfReady();
-                    return;
-                }
-                else
-                {
-                    if (punch1 <= diff)
-                    {
-                        me->HandleEmoteCommand(35);
-                        punch1 = 7500;
-                    }
-                    else
-                        punch1 -= diff;
+			void EnterCombat(Unit* unit)
+			{
+				isInCombat = true;
+			}
 
-                    if (punch2 <= diff)
-                    {
-                        me->HandleEmoteCommand(36);
-                        punch2 = 7500;
-                    }
-                    else
-                        punch2 -= diff;
+			void JustRespawned()
+			{
+				Reset();
+			}
 
-                    if (punch3 <= diff)
-                    {
-                        me->HandleEmoteCommand(37);
-                        punch3 = 7500;
-                    }
-                    else
-                        punch3 -= diff;
-                }
+			void UpdateAI(const uint32 diff)
+			{
+				if (isInCombat)
+				{
+					DoMeleeAttackIfReady();
+					return;
+				}
+				else
+				{
+					if (punch1 <= diff)
+					{
+						me->HandleEmoteCommand(35);
+						punch1 = 7500;
+					}
+					else
+						punch1 -= diff;
 
-                if (me->GetPositionX() == 1446.322876f && me->GetPositionY() == 3389.027588f && me->GetPositionZ() == 173.782471f)
-                    me->ForcedDespawn(1000);
-            }
+					if (punch2 <= diff)
+					{
+						me->HandleEmoteCommand(36);
+						punch2 = 7500;
+					}
+					else
+						punch2 -= diff;
+
+					if (punch3 <= diff)
+					{
+						me->HandleEmoteCommand(37);
+						punch3 = 7500;
+					}
+					else
+						punch3 -= diff;
+				}
+
+				
+
+				if (me->GetPositionX() == 1446.322876f && me->GetPositionY() == 3389.027588f && me->GetPositionZ() == 173.782471f)
+					me->DespawnOrUnsummon(100);
+
+			
+			
+		}
         };
 };
 
