@@ -372,7 +372,17 @@ public:
                 me->CombatStop();
                 me->setFaction(35);
                 me->SetFullHealth();
-                me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE);
+                
+				switch (urand(0, 2))
+				{
+				case 0: me->MonsterSay("It seems I have more training to do. Thank you for the lesson.", LANG_UNIVERSAL, 0);
+					    me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE); break;
+				case 1: me->MonsterSay("Amazing! You're much stronger than you look.", LANG_UNIVERSAL, 0);
+					    me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE); break;
+				case 2: me->MonsterSay("It was an honor to be defeated by you", LANG_UNIVERSAL, 0);
+					    me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE); break;
+				default: break;
+				}
                 events.Reset();
                 events.ScheduleEvent(EVENT_RESET, 5000);
                 damage = 0;
@@ -408,7 +418,10 @@ public:
                         events.ScheduleEvent(EVENT_FALCON, 4000);
                         break;
                     case EVENT_RESET: //remechant
-                        Reset();
+                       // Reset();
+
+					// have him despawn instead of reset, looks better.
+						me->DespawnOrUnsummon(100);
                     	break;
                     case EVENT_CHECK_AREA:
                         if (me->GetAreaId() != 5843) // Grotte Paisible
