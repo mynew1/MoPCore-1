@@ -211,11 +211,30 @@ class mob_tushui_trainee : public CreatureScript
 					damage = 0;
 					me->CombatStop();
 					isInCombat = false;
-					me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE);
-					//Talk(urand(0, 7));
-					me->MonsterSay("My skills are no match for yours. I admit defeat.", LANG_UNIVERSAL, NULL);
-
-					me->GetMotionMaster()->MovePoint(0, 1446.322876f, 3389.027588f, 173.782471f);
+					//me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE);
+					//speak randomly instead and random emote
+					switch (urand(0, 3))
+					{
+					case 0: me->HandleEmoteCommand(EMOTE_ONESHOT_BOW);
+					        me->MonsterSay("My skills are no match for yours. I admit defeat.", LANG_UNIVERSAL, 0); break;
+					case 1: me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE); 
+						    me->MonsterSay("I have never seen a trainee with skills such as yours. I must tell the others.", LANG_UNIVERSAL, 0); break;
+					case 2: me->HandleEmoteCommand(EMOTE_ONESHOT_BOW);
+						    me->MonsterSay("You are an honorable opponent.", LANG_UNIVERSAL, 0); break;
+					case 3: me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE); 
+						    me->MonsterSay("Your skills are too great. I yield.", LANG_UNIVERSAL, 0); break;
+					default: break;
+					}
+					
+					//go to one of three random spots after combat.
+					switch (urand(0, 2))
+					{
+					case 0: me->GetMotionMaster()->MovePoint(0, 1446.322876f, 3389.027588f, 173.782471f); break;
+					case 1: me->GetMotionMaster()->MovePoint(0, 1433.819458f, 3349.269287f, 172.936386f); break;
+					case 2: me->GetMotionMaster()->MovePoint(0, 1418.402466f, 3379.007080f, 172.923874f); break;
+					default: break;
+					}
+				 
 
 				}
 			}
@@ -265,11 +284,16 @@ class mob_tushui_trainee : public CreatureScript
 				}
 
 				
-
+				//despawn at these spots
 				if (me->GetPositionX() == 1446.322876f && me->GetPositionY() == 3389.027588f && me->GetPositionZ() == 173.782471f)
 					me->DespawnOrUnsummon(100);
-
 			
+				if (me->GetPositionX() == 1433.819458f && me->GetPositionY() == 3349.269287f && me->GetPositionZ() == 172.936386f)
+					me->DespawnOrUnsummon(100);
+				
+				if (me->GetPositionX() == 1418.402466f && me->GetPositionY() == 3379.007080f && me->GetPositionZ() == 172.923874f)
+					me->DespawnOrUnsummon(100);
+
 			
 		}
         };
@@ -1245,7 +1269,8 @@ public:
             switch (action)
             {
             case ACTION_TALK:
-                Talk(0);
+				me->MonsterSay("I hope you are ready, young one. Jaomin Ro is waiting for you, next to the bridge.", LANG_UNIVERSAL, 0);
+				// Talk(0);
                 hasSaidIntro = true;
                 break;
             default:
