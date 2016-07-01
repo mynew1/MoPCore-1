@@ -458,6 +458,22 @@ public:
         {
             if (me->GetPositionX() == 1403.440430f && me->GetPositionY() == 3566.382568f)
                 me->DespawnOrUnsummon();
+
+			if (me->GetPositionX() == 1415.110107f && me->GetPositionY() == 3537.270264f)
+				me->DespawnOrUnsummon();
+
+			if (me->GetPositionX() == 1435.938110f && me->GetPositionY() == 3551.951172f)
+				me->DespawnOrUnsummon();
+
+			if (me->GetPositionX() == 1415.230591f && me->GetPositionY() == 3552.024170f)
+				me->DespawnOrUnsummon();
+
+			if (me->GetPositionX() == 1384.352051f && me->GetPositionY() == 3552.465576f)
+				me->DespawnOrUnsummon();
+
+			if (me->GetPositionX() == 1403.720459f && me->GetPositionY() == 3546.111816f)
+				me->DespawnOrUnsummon();
+			
         }
     };
 };
@@ -494,7 +510,7 @@ public:
         
         void DamageTaken(Unit* pDoneBy, uint32 &uiDamage)
         {
-            if(me->GetHealthPct() < 25 && pDoneBy && pDoneBy->ToCreature() && pDoneBy->ToCreature()->GetEntry() == 54130)
+			if (me->GetHealthPct() < 25 && pDoneBy && pDoneBy->ToCreature() && pDoneBy->ToCreature()->GetEntry() == 99995)
                 uiDamage = 0;
         }
         
@@ -533,7 +549,7 @@ public:
 
                 guidMob[i] = 0;
 
-                if(TempSummon* temp = me->SummonCreature(54130, me->GetPositionX()-3+rand()%6, me->GetPositionY() + 4 + rand()%4, me->GetPositionZ()+2, 3.3f, TEMPSUMMON_CORPSE_TIMED_DESPAWN, 10000))
+				if (TempSummon* temp = me->SummonCreature(99995, me->GetPositionX() - 3 + rand() % 6, me->GetPositionY() + 4 + rand() % 4, me->GetPositionZ() + 2, 3.3f, TEMPSUMMON_CORPSE_TIMED_DESPAWN, 10000))
                 {
                     guidMob[i] = temp->GetGUID();
                     temp->SetFacingToObject(me);
@@ -551,17 +567,27 @@ public:
             std::list<Player*> PlayerList;
             GetPlayerListInGrid(PlayerList, me, 20.0f);
             std::list<Creature*> amberleafScampList;
-            GetCreatureListWithEntryInGrid(amberleafScampList, me, 54130, 15.0f);
+			GetCreatureListWithEntryInGrid(amberleafScampList, me, 99995, 15.0f);
             for (auto player: PlayerList)
                 if (player->GetQuestStatus(29419) == QUEST_STATUS_INCOMPLETE)
                 {
                     player->KilledMonsterCredit(54855, 0);
                     for (auto amberleafScamp: amberleafScampList)
-                        amberleafScamp->GetMotionMaster()->MovePoint(0, 1403.440430f, 3566.382568f, 88.840317f);
+						switch (urand(0, 5))
+					    {
+						case 0: amberleafScamp->GetMotionMaster()->MovePoint(0, 1403.440430f, 3566.382568f, 88.840317f); break;
+						case 1: amberleafScamp->GetMotionMaster()->MovePoint(0, 1415.110107f, 3537.270264f, 86.494148f); break;
+						case 2: amberleafScamp->GetMotionMaster()->MovePoint(0, 1435.938110f, 3551.951172f, 86.563499f); break;
+						case 3: amberleafScamp->GetMotionMaster()->MovePoint(0, 1415.230591f, 3552.024170f, 89.001579f); break;
+						case 4: amberleafScamp->GetMotionMaster()->MovePoint(0, 1384.352051f, 3552.465576f, 89.972229f); break;
+						case 5: amberleafScamp->GetMotionMaster()->MovePoint(0, 1403.720459f, 3546.111816f, 89.443756f); break;
+						default: break;
+				      	}
                     Talk(0);
+					
                 }
 
-            events.Update(diff);
+		    events.Update(diff);
 
             while (uint32 eventId = events.ExecuteEvent())
             {
@@ -592,6 +618,7 @@ public:
                     }
                 }
             }
+
         }
     };
 };
