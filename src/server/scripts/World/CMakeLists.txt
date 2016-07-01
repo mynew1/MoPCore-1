@@ -23,6 +23,7 @@ set(scripts_STAT_SRCS
   World/npc_companions.cpp
   World/npcs_special.cpp
   World/npc_mine_cart.cpp
+  world/darkmoon_faire.cpp
 )
 
 message("  -> Prepared: World")

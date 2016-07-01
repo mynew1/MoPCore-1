@@ -97,6 +97,7 @@ void AddSC_npc_taxi();
 void AddSC_npc_companions();
 void AddSC_achievement_scripts();
 void AddSC_mine_cart();
+void AddSC_darkmoon_faire();
 
 //eastern kingdoms
 void AddSC_alterac_valley();                 //Alterac Valley
@@ -984,6 +985,7 @@ void AddWorldScripts()
     AddSC_achievement_scripts();
     AddSC_chat_log();
     AddSC_mine_cart();
+	AddSC_darkmoon_faire();
 #endif
 }
 
