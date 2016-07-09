@@ -1591,11 +1591,11 @@ class npc_josiah_avery : public CreatureScript
 public:
 	npc_josiah_avery() : CreatureScript("npc_josiah_avery") {}
 
-	bool OnQuestReward(Player* player, Creature* creature, Quest const* quest, uint32 opt)
+	bool OnQuestComplete(Player* player, Creature* creature, Quest const* quest, uint32 opt)
 	{
-		if (quest->GetQuestId() == QUEST_THE_REBEL_LORDS_ARSENAL)
-		{
-			creature->AddAura(SPELL_WORGEN_BITE, player);
+		if (player->GetQuestStatus(14159) != QUEST_STATUS_REWARDED)
+		  
+		{ // creature->AddAura(SPELL_WORGEN_BITE, player);
 			player->RemoveAura(SPELL_PHASE_QUEST_2);
 			creature->SetPhaseMask(4, 1);
 			creature->CastSpell(creature, SPELL_SUMMON_JOSIAH_AVERY);
@@ -1830,7 +1830,7 @@ public:
 		void SpellHitTarget(Unit* Mastiff, SpellInfo const* cSpell)
 		{
 			if (cSpell->Id == SPELL_ATTACK_LURKER)
-			{
+			{ 
 				Mastiff->RemoveAura(SPELL_SHADOWSTALKER_STEALTH);
 				Mastiff->AddThreat(me, 1.0f);
 				me->AddThreat(Mastiff, 1.0f);
@@ -2304,7 +2304,7 @@ public:
 };
 
 /*######
-## npc_lord_darius_crowley_c2
+## npc_lord_darius_crowley_c2w
 ######*/
 //class npc_lord_darius_crowley_c2 : public CreatureScript
 //{
