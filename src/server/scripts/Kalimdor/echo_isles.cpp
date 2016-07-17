@@ -3294,7 +3294,7 @@ public:
 
 // ######################################################### sen'jin
 
-void AddSC_lost_isle()
+void AddSC_echo_isles()
 {
     new npc_Zapnozzle();
     new npc_singe_bombe();

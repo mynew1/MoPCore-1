@@ -19,7 +19,6 @@ set(scripts_STAT_SRCS
   Maelstrom//TheStonecore/the_stonecore.h
   Maelstrom/deepholm.cpp
   Maelstrom/kezan.cpp
-  Maelstrom/lost_isles.cpp
   
 )
 

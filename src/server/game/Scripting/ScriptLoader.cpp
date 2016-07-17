@@ -739,7 +739,7 @@ void AddSC_madness_of_deathwing();
 
 void AddSC_deepholm(); //Maelstrom Scripts
 void AddSC_kezan();
-void AddSC_lost_isle();
+void AddSC_echo_isles();
 void AddSC_boss_corborus(); //The StoneCore
 void AddSC_boss_high_priestess_azil();
 void AddSC_boss_ozruk();
@@ -1221,7 +1221,7 @@ void AddMaelstromScripts()
 #ifdef SCRIPTS
 	 AddSC_deepholm(); //Maelstrom Scripts
 	 AddSC_kezan();
-	 AddSC_lost_isle();
+	 AddSC_echo_isles();
 	 AddSC_boss_corborus(); //The StoneCore
 	 AddSC_boss_high_priestess_azil();
 	 AddSC_boss_ozruk();
