@@ -10,7 +10,7 @@
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 # Set projectname (must be done AFTER setting configurationtypes)
-project(MoPCore)
+project(MaddieCore-MOP)
 
 # Fix compile
 SET(CMAKE_C_FLAGS "" CACHE STRING "" FORCE)
