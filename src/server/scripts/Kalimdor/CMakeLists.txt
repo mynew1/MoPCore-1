@@ -184,6 +184,7 @@ set(scripts_STAT_SRCS
   Kalimdor/OnyxiasLair/onyxias_lair.h
   Kalimdor/OnyxiasLair/instance_onyxias_lair.cpp
   Kalimdor/southern_barrens.cpp
+  Kalimdor/echo_isles.cpp
 )
 
 message("  -> Prepared: Kalimdor")

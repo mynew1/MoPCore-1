@@ -264,6 +264,8 @@ Unit::Unit(bool isWorldObject): WorldObject(isWorldObject)
     m_reducedThreatPercent = 0;
     m_misdirectionTargetGUID = 0;
 
+	_redirectThreadInfo = RedirectThreatInfo();
+
     // remove aurastates allowing special moves
     for (uint8 i = 0; i < MAX_REACTIVE; ++i)
         m_reactiveTimer[i] = 0;
@@ -1840,6 +1842,52 @@ void Unit::DealMeleeDamage(CalcDamageInfo* damageInfo, bool durabilityLoss)
             victim->DealDamage(this, damage, 0, SPELL_DIRECT_DAMAGE, i_spellProto->GetSchoolMask(), i_spellProto, true);
         }
     }
+}
+
+void Unit::HandleEmote(uint32 emote_id)
+{
+	if (!emote_id)
+		HandleEmoteState(EMOTE_ONESHOT_NONE);
+	else
+	{
+		if (EmotesEntry const* emoteEntry = sEmotesStore.LookupEntry(emote_id))
+		{
+			if (emoteEntry->EmoteType) // 1, 2 Emote States, 0 ONESHOT animations play.
+			{
+				// If the creature already has this state return.
+				if (GetEmoteState() == emote_id && GetTypeId() == TYPEID_UNIT)
+					return;
+
+				if (GetTypeId() == TYPEID_PLAYER)
+				{
+					// When a player types in the same /read emote again, he cancels it. Acts like a toggle.
+					//	if (GetStoredEmoteState() && GetStoredEmoteState() == emote_id && emote_id == EMOTE_STATE_READ)
+					{
+						HandleEmoteState(EMOTE_ONESHOT_NONE);
+						SetStoredEmoteState(EMOTE_ONESHOT_NONE);
+					}
+					//else
+					{
+						HandleEmoteState(emote_id);
+						//	if (emote_id == EMOTE_STATE_READ || emote_id == EMOTE_STATE_DANCE)
+						SetStoredEmoteState(emote_id);
+					}
+				}
+				else
+					HandleEmoteState(emote_id);
+			}
+			else
+				HandleEmoteCommand(emote_id);
+		}
+	}
+}
+
+
+
+// The UNIT_NPC_EMOTESTATE field is used for Emote States now.
+void Unit::HandleEmoteState(uint32 emote_id)
+{
+	SetUInt32Value(UNIT_NPC_EMOTESTATE, emote_id);
 }
 
 void Unit::HandleEmoteCommand(uint32 anim_id)
@@ -8866,36 +8914,49 @@ bool Unit::HandleDummyAuraProc(Unit* victim, uint32 damage, AuraEffectPtr trigge
                     triggered_spell_id = 99000;
                     target = victim;
                     break;
-                case 49028: // Dancing Rune Weapon
-                {
-                    if (GetTypeId() != TYPEID_PLAYER)
-                        return false;
+                
 
-                    // 1 dummy aura for dismiss rune blade
-                    if (effIndex != 1)
-                        return false;
+					// Dancing Rune Weapon
+					if (dummySpell->Id == 49028)
+					{
+						// 1 dummy aura for dismiss rune blade
+						if (effIndex != 1)
+							return false;
 
-                    Unit* pPet = NULL;
-                    for (ControlList::const_iterator itr = m_Controlled.begin(); itr != m_Controlled.end(); ++itr) // Find Rune Weapon
-                        if ((*itr)->GetEntry() == 27893)
-                        {
-                            pPet = *itr;
-                            break;
-                        }
+						Unit* pPet = NULL;
+						for (ControlList::const_iterator itr = m_Controlled.begin(); itr != m_Controlled.end(); ++itr) // Find Rune Weapon
+							if ((*itr)->GetEntry() == 27893)
+							{
+								pPet = *itr;
+								break;
+							}
 
-                    if (pPet && (pPet->getVictim() || getVictim()) && damage && procSpell)
-                    {
-                        uint32 procDmg = damage / 2;
-                        pPet->SendSpellNonMeleeDamageLog(pPet->getVictim() ? pPet->getVictim() : getVictim(), procSpell->Id, procDmg, procSpell->GetSchoolMask(), 0, 0, false, 0, false);
-                        pPet->DealDamage(pPet->getVictim() ? pPet->getVictim() : getVictim(), procDmg, NULL, SPELL_DIRECT_DAMAGE, procSpell->GetSchoolMask(), procSpell, true);
-                        break;
-                    }
-                    else
-                        return false;
-                    return true; // Return true because triggered_spell_id is not exist in DBC, nothing to trigger
-
-                    break;
-                }
+						// special abilities damage
+						if (pPet && pPet->getVictim() && damage && procSpell)
+						{
+							pPet->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+							pPet->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+							uint32 procDmg = damage / 2;
+							pPet->SendSpellNonMeleeDamageLog(pPet->getVictim(), procSpell->Id, procDmg, procSpell->GetSchoolMask(), 0, 0, false, 0, false);
+							pPet->DealDamage(pPet->getVictim(), procDmg, NULL, SPELL_DIRECT_DAMAGE, procSpell->GetSchoolMask(), procSpell, true);
+							break;
+						}
+						else // copy 50% melee damage
+							if (pPet && pPet->getVictim() && damage && !procSpell)
+							{
+								CalcDamageInfo damageInfo;
+								CalculateMeleeDamage(pPet->getVictim(), 0, &damageInfo, BASE_ATTACK);
+								damageInfo.attacker = pPet;
+								damageInfo.damage = damageInfo.damage / 2;
+								// Send log damage message to client
+								pPet->DealDamageMods(pPet->getVictim(), damageInfo.damage, &damageInfo.absorb);
+								pPet->SendAttackStateUpdate(&damageInfo);
+								pPet->ProcDamageAndSpell(damageInfo.target, damageInfo.procAttacker, damageInfo.procVictim, damageInfo.procEx, damageInfo.damage, damageInfo.attackType);
+								pPet->DealMeleeDamage(&damageInfo, true);
+							}
+							else
+								return false;
+					}
                 case 49194: // Unholy Blight
                 {
                     if (GetTypeId() != TYPEID_PLAYER)
@@ -19974,6 +20035,11 @@ void Unit::RestoreFaction()
     }
 }
 
+Unit* Unit::GetRedirectThreatTarget()
+{
+	return _redirectThreadInfo.GetTargetGUID() ? ObjectAccessor::GetUnit(*this, _redirectThreadInfo.GetTargetGUID()) : NULL;
+}
+
 bool Unit::CreateVehicleKit(uint32 id, uint32 creatureEntry)
 {
     VehicleEntry const* vehInfo = sVehicleStore.LookupEntry(id);
@@ -21568,23 +21634,22 @@ void Unit::_EnterVehicle(Vehicle* vehicle, int8 seatId, AuraApplication const* a
 
 void Unit::ChangeSeat(int8 seatId, bool next)
 {
-    if (!m_vehicle)
-        return;
+	if (!m_vehicle)
+		return;
 
-    if (seatId < 0)
-    {
-        seatId = m_vehicle->GetNextEmptySeat(GetTransSeat(), next);
-        if (seatId < 0)
-            return;
-    }
-    else if (seatId == GetTransSeat() || !m_vehicle->HasEmptySeat(seatId))
-        return;
+	if (seatId < 0)
+	{
+		seatId = m_vehicle->GetNextEmptySeat(GetTransSeat(), next);
+		if (seatId < 0)
+			return;
+	}
+	else if (seatId == GetTransSeat() || !m_vehicle->HasEmptySeat(seatId))
+		return;
 
-    m_vehicle->RemovePassenger(this);
-    if (!m_vehicle->AddPassenger(this, seatId))
-        ASSERT(false);
+	m_vehicle->RemovePassenger(this);
+	if (!m_vehicle->AddPassenger(this, seatId))
+		ASSERT(false);
 }
-
 void Unit::ExitVehicle(Position const* exitPosition)
 {
     //! This function can be called at upper level code to initialize an exit from the passenger's side.

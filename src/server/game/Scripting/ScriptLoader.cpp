@@ -47,6 +47,9 @@ void AddSC_item_spell_scripts();
 void AddSC_example_spell_scripts();
 void AddSC_holiday_spell_scripts();
 
+// Pets
+void AddSC_deathknight_pet_scripts();
+
 void AddSC_SmartSCripts();
 
 //Commands
@@ -97,6 +100,7 @@ void AddSC_npc_taxi();
 void AddSC_npc_companions();
 void AddSC_achievement_scripts();
 void AddSC_mine_cart();
+void AddSC_darkmoon_faire();
 
 //eastern kingdoms
 void AddSC_alterac_valley();                 //Alterac Valley
@@ -196,6 +200,8 @@ void AddSC_boss_jandice_barov();
 void AddSC_boss_lillian_voss();
 void AddSC_boss_rattlegore();
 void AddSC_scholomance();
+void AddSC_instance_scholomance();
+
 void AddSC_boss_baron_ashbury();    //Shadowfang keep
 void AddSC_boss_baron_silverlaine();
 void AddSC_boss_commander_springvale();
@@ -219,6 +225,9 @@ void AddSC_stratholme();
 void AddSC_sunken_temple();                  // Sunken Temple
 void AddSC_instance_sunken_temple();
 void AddSC_instance_sunwell_plateau();       //Sunwell Plateau
+
+
+
 void AddSC_boss_kalecgos();
 void AddSC_boss_brutallus();
 void AddSC_boss_felmyst();
@@ -273,6 +282,7 @@ void AddSC_undercity();
 void AddSC_western_plaguelands();
 void AddSC_westfall();
 void AddSC_wetlands();
+
 
 //kalimdor
 void AddSC_blackfathom_deeps();              //Blackfathom Depths
@@ -633,6 +643,20 @@ void AddSC_boss_argaloth();
 void AddSC_boss_occuthar();
 void AddSC_boss_alizabal();
 
+void AddSC_boss_drahga_shadowburner(); //Grim Batol
+void AddSC_boss_erudax();
+void AddSC_boss_forgemaster_throngus();
+void AddSC_boss_general_umbriss();
+void AddSC_grim_batol();
+void AddSC_instance_grim_batol();
+
+void AddSC_boss_commander_ulthok(); //Throne of the Tides
+void AddSC_boss_lady_nazjar();
+void AddSC_boss_erunak_stonespeaker();
+void AddSC_boss_ozumat();
+void AddSC_instance_throne_of_the_tides();
+void AddSC_throne_of_the_tides();
+
 
 void AddSC_instance_lost_city_of_the_tolvir(); // Lost City of the Tol'Vir
 void AddSC_lost_city_of_the_tolvir();
@@ -659,6 +683,14 @@ void AddSC_boss_omnotron_defence_system();
 void AddSC_boss_maloriak();
 void AddSC_boss_chimaeron();
 void AddSC_boss_atramedes();
+
+void AddSC_bastion_of_twilight(); //Bastion of Twilight
+void AddSC_boss_chogall();
+void AddSC_boss_ascendant_council();
+void AddSC_boss_halfus_wyrmbreaker();
+void AddSC_boss_sinestra();
+void AddSC_boss_theralion_and_valiona();
+void AddSC_instance_bastion_of_twilight();
 
 void AddSC_instance_throne_of_the_four_winds(); // Throne of the Four Winds
 void AddSC_throne_of_the_four_winds();
@@ -707,15 +739,44 @@ void AddSC_boss_warmaster_blackhorn();
 void AddSC_spine_of_deathwing();
 void AddSC_madness_of_deathwing();
 
+
+void AddSC_deepholm(); //Maelstrom Scripts
+void AddSC_kezan();
+void AddSC_echo_isles();
+void AddSC_boss_corborus(); //The StoneCore
+void AddSC_boss_high_priestess_azil();
+void AddSC_boss_ozruk();
+void AddSC_boss_slabhide();
+void AddSC_instance_the_stonecore();
+void AddSC_the_stonecore();
+
 // Pandaria
+
 // Heart of Fear
 void AddSC_instance_heart_of_fear();
+void AddSC_heart_of_fear();
 void AddSC_boss_ambershaper_unsok();
-void AddSC_boss_blade_lord_tayak();
+void AddSC_boss_tayak();
 void AddSC_boss_garalon();
 void AddSC_boss_grand_empress_shekzeer();
-void AddSC_boss_imperial_vizier_zorlok();
-void AddSC_boss_wind_lord_meljarak();
+void AddSC_boss_zorlok();
+void AddSC_boss_meljarak();
+
+void AddSC_boss_lei_shi(); //Terrace of the Endless Spring
+void AddSC_boss_protectors_of_the_endless();
+void AddSC_boss_sha_of_fear();
+void AddSC_boss_tsulong();
+void AddSC_instance_terrace_of_endless_spring();
+void AddSC_terrace_of_endless_spring();
+
+void AddSC_boss_council_of_elders(); //Throne of Thunder
+void AddSC_boss_horridon();
+void AddSC_boss_jin_rokh_breaker();
+void AddSC_boss_megaera();
+void AddSC_boss_tortos();
+void AddSC_boss_ji_kun();
+void AddSC_instance_throne_of_thunder();
+
 
 void AddSC_instance_temple_of_jade_serpent();       // Temple of Jade Serpent
 void AddSC_boss_wise_mari();
@@ -774,6 +835,39 @@ void AddSC_jade_forest();
 void AddSC_vale_of_eternal_blossoms();
 void AddSC_kun_lai_summit();
 
+void AddSC_boss_galleon(); //Pandaria World Bosses
+void AddSC_boss_nalak();
+void AddSC_boss_oondasta();
+void AddSC_boss_ordos();
+void AddSC_boss_sha_of_anger();
+void AddSC_boss_chi_ji(); //The August Celestials
+void AddSC_boss_niuzao();
+void AddSC_boss_xuen();
+void AddSC_boss_yu_lon();
+
+//Siege Of Orgrimmar //Added this after drinking.. may not be done right.
+void AddSC_fallen_protectors();
+void AddSC_galakras();
+void AddSC_garrosh_hellscream();
+void AddSC_general_nazgrim();
+void AddSC_immerseus();
+void AddSC_iron_juggernaut();
+void AddSC_korkron_dark_shamans();
+void AddSC_malkorok();
+void AddSC_norushen();
+void AddSC_paragons_of_the_klaxxi();
+void AddSC_sha_of_pride();
+void AddSC_siegecrafter_blackfuse();
+void AddSC_spoils_of_pandaria();
+void AddSC_thok_the_bloodthirsty();
+void AddSC_instance_siege_of_orgrimmar();
+void AddSC_siege_of_orgrimmar();
+
+// Timeless Isle
+void AddSC_zone_timeless_isle();
+void AddSC_timeless_isle();
+
+//Wandering Isle
 void AddSC_WanderingIsland_North();
 void AddSC_WanderingIsland_East();
 void AddSC_WanderingIsland_West();
@@ -805,6 +899,7 @@ void AddScripts()
     AddKalimdorScripts();
     AddOutlandScripts();
     AddNorthrendScripts();
+	AddMaelstromScripts();
     AddPandarieScripts();
     AddBattlegroundScripts();
     AddOutdoorPvPScripts();
@@ -841,6 +936,10 @@ void AddSpellScripts()
     AddSC_holiday_spell_scripts();
 }
 
+void AddPetScripts()
+{
+	AddSC_deathknight_pet_scripts();
+}
 void AddCommandScripts()
 {
     AddSC_anticheat_commandscript();
@@ -893,6 +992,7 @@ void AddWorldScripts()
     AddSC_achievement_scripts();
     AddSC_chat_log();
     AddSC_mine_cart();
+	AddSC_darkmoon_faire();
 #endif
 }
 
@@ -1022,6 +1122,36 @@ void AddEasternKingdomsScripts()
     AddSC_boss_muru();
     AddSC_boss_kiljaeden();
     AddSC_sunwell_plateau();
+
+	 AddSC_bastion_of_twilight(); //Bastion of Twilight
+	 AddSC_boss_chogall();
+	 AddSC_boss_ascendant_council();
+	 AddSC_boss_halfus_wyrmbreaker();
+	 AddSC_boss_sinestra();
+	 AddSC_boss_theralion_and_valiona();
+	 AddSC_instance_bastion_of_twilight();
+
+	AddSC_boss_drahga_shadowburner(); //Grim Batol
+	AddSC_boss_erudax();
+	AddSC_boss_forgemaster_throngus();
+	AddSC_boss_general_umbriss();
+	AddSC_grim_batol();
+    AddSC_instance_grim_batol();
+
+    AddSC_boss_commander_ulthok(); //Throne of the Tides
+	AddSC_boss_lady_nazjar();
+	AddSC_boss_erunak_stonespeaker();
+    AddSC_boss_ozumat();
+	AddSC_instance_throne_of_the_tides();
+	AddSC_throne_of_the_tides();
+
+    AddSC_boss_darkmaster_gandling();       //Scholomance
+	AddSC_boss_jandice_barov();
+	AddSC_boss_lillian_voss();
+	AddSC_boss_rattlegore();
+	AddSC_scholomance();
+    AddSC_instance_scholomance();
+
     AddSC_boss_archaedas();                 //Uldaman
     AddSC_boss_ironaya();
     AddSC_uldaman();
@@ -1092,7 +1222,21 @@ void AddEasternKingdomsScripts()
     AddSC_boss_alizabal();
 #endif
 }
+void AddMaelstromScripts()
+{
 
+#ifdef SCRIPTS
+	 AddSC_deepholm(); //Maelstrom Scripts
+	 AddSC_kezan();
+	 AddSC_echo_isles();
+	 AddSC_boss_corborus(); //The StoneCore
+	 AddSC_boss_high_priestess_azil();
+	 AddSC_boss_ozruk();
+	 AddSC_boss_slabhide();
+	 AddSC_instance_the_stonecore();
+	 AddSC_the_stonecore();
+#endif
+}
 void AddKalimdorScripts()
 {
 #ifdef SCRIPTS
@@ -1520,13 +1664,29 @@ void AddPandarieScripts()
 #ifdef SCRIPTS
 // Heart of Fear
 	AddSC_instance_heart_of_fear();
+	AddSC_heart_of_fear();
 	AddSC_boss_ambershaper_unsok();
-	AddSC_boss_blade_lord_tayak();
+	AddSC_boss_tayak();
 	AddSC_boss_garalon();
 	AddSC_boss_grand_empress_shekzeer();
-	AddSC_boss_imperial_vizier_zorlok();
-	AddSC_boss_wind_lord_meljarak();
+	AddSC_boss_zorlok();
+	AddSC_boss_meljarak();
 	
+	AddSC_boss_lei_shi(); //Terrace of the Endless Spring
+	AddSC_boss_protectors_of_the_endless();
+	AddSC_boss_sha_of_fear();
+	AddSC_boss_tsulong();
+	AddSC_instance_terrace_of_endless_spring();
+	AddSC_terrace_of_endless_spring();
+
+	AddSC_boss_council_of_elders(); //Throne of Thunder
+	AddSC_boss_horridon();
+	AddSC_boss_jin_rokh_breaker();
+	AddSC_boss_megaera();
+	AddSC_boss_tortos();
+	AddSC_boss_ji_kun();
+	AddSC_instance_throne_of_thunder();
+
     AddSC_instance_temple_of_jade_serpent();        // Temple of Jade Serpent
     AddSC_boss_wise_mari();
     AddSC_boss_lorewalker_stonestep();
@@ -1547,11 +1707,15 @@ void AddPandarieScripts()
     AddSC_boss_striker_gadok();
     AddSC_boss_commander_rimok();
     AddSC_boss_raigonn();
-    AddSC_boss_sha_of_anger();                      // Pandaria World Bosses
-    AddSC_boss_galion();
-    AddSC_boss_chi_ji();
+	AddSC_boss_galleon(); //Pandaria World Bosses
     AddSC_boss_nalak();
-    AddSC_boss_ordos();
+    AddSC_boss_oondasta();
+	AddSC_boss_ordos();
+    AddSC_boss_sha_of_anger();
+	AddSC_boss_chi_ji(); //The August Celestials
+	AddSC_boss_niuzao();
+	AddSC_boss_xuen();
+	AddSC_boss_yu_lon();;
     AddSC_instance_shadopan_monastery();            // Shadopan Monastery
     AddSC_shadopan_monastery();
     AddSC_boss_gu_cloudstrike();
@@ -1570,6 +1734,24 @@ void AddPandarieScripts()
     AddSC_boss_elegon();
     AddSC_boss_will_of_emperor();
 
+	//Siege Of Orgrimmar //Added this after drinking.. may not be done right.
+	AddSC_fallen_protectors();
+	AddSC_galakras();
+	AddSC_garrosh_hellscream();
+	AddSC_general_nazgrim();
+	AddSC_immerseus();
+	AddSC_iron_juggernaut();
+	AddSC_korkron_dark_shamans();
+	AddSC_malkorok();
+	AddSC_norushen();
+	AddSC_paragons_of_the_klaxxi();
+	AddSC_sha_of_pride();
+	AddSC_siegecrafter_blackfuse();
+	AddSC_spoils_of_pandaria();
+	AddSC_thok_the_bloodthirsty();
+	AddSC_instance_siege_of_orgrimmar();
+	AddSC_siege_of_orgrimmar();
+
 
     AddSC_townlong_steppes();
     AddSC_dread_wastes();
@@ -1578,6 +1760,10 @@ void AddPandarieScripts()
     AddSC_jade_forest();
     AddSC_kun_lai_summit();
     AddSC_vale_of_eternal_blossoms();
+
+	// Timeless Isle
+	AddSC_zone_timeless_isle();
+	AddSC_timeless_isle();
 
     AddSC_WanderingIsland_North();
     AddSC_WanderingIsland_East();

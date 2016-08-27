@@ -772,7 +772,7 @@ class Creature : public Unit, public GridObject<Creature>, public MapCreature
 
         static float _GetDamageMod(int32 Rank);
 
-        float m_SightDistance, m_CombatDistance;
+		float m_SightDistance, m_CombatDistance, _ReactDistance;
 
         void SetGUIDTransport(uint32 guid) { guid_transport=guid; }
         uint32 GetGUIDTransport() { return guid_transport; }
@@ -791,6 +791,8 @@ class Creature : public Unit, public GridObject<Creature>, public MapCreature
 
         Battleground* GetBattleground() const { return m_battleground; }
         void SetBattleground(Battleground* bg) { m_battleground = bg; }
+		void SetSeerGUID(uint64 guid) { uiSeerGUID = guid; }
+		uint64 GetSeerGUID() const { return uiSeerGUID; }
 
     protected:
         bool CreateFromProto(uint32 guidlow, uint32 Entry, uint32 vehId, uint32 team, const CreatureData* data = NULL);
@@ -841,7 +843,10 @@ class Creature : public Unit, public GridObject<Creature>, public MapCreature
         uint32 guid_transport;
 
         bool IsInvisibleDueToDespawn() const;
+		uint64 uiSeerGUID;
         bool CanAlwaysSee(WorldObject const* obj) const;
+		
+
     private:
 
         //WaypointMovementGenerator vars

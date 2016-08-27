@@ -160,6 +160,10 @@ public:
         }
     };
 };
+enum Trainee
+{
+	TRAINEE_DESPAWN_HACKFIX = 114967
+};
 
 class mob_tushui_trainee : public CreatureScript
 {
@@ -171,95 +175,127 @@ class mob_tushui_trainee : public CreatureScript
             return new mob_tushui_trainee_AI(creature);
         }
 
-        struct mob_tushui_trainee_AI : public ScriptedAI
-        {
-            mob_tushui_trainee_AI(Creature* creature) : ScriptedAI(creature)
-            {
-            }
+		struct mob_tushui_trainee_AI : public ScriptedAI
+		{
+			mob_tushui_trainee_AI(Creature* creature) : ScriptedAI(creature)
+			{
+			}
 
-            bool isInCombat;
-            uint64 playerGUID;
-            uint32 punch1;
-            uint32 punch2;
-            uint32 punch3;
+			bool isInCombat;
+			uint64 playerGUID;
+			uint32 punch1;
+			uint32 punch2;
+			uint32 punch3;
 
-            void Reset()
-            {
-                punch1 = 1000;
-                punch2 = 3500;
-                punch3 = 6000;
-                playerGUID = 0;
-                isInCombat = false;
-                me->SetReactState(REACT_DEFENSIVE);
-                me->setFaction(7);
-                me->SetFullHealth();
-            }
+			void Reset()
+			{
+				punch1 = 1000;
+				punch2 = 3500;
+				punch3 = 6000;
+				playerGUID = 0;
+				isInCombat = false;
+				me->SetReactState(REACT_DEFENSIVE);
+				me->setFaction(7);
+				me->SetFullHealth();
+			}
 
-            void DamageTaken(Unit* attacker, uint32& damage)
-            {
-                if (me->HealthBelowPctDamaged(16.67f, damage))
-                {
-                    me->setFaction(35);
+			void DamageTaken(Unit* attacker, uint32& damage)
+			{
+				if (me->HealthBelowPctDamaged(16.67f, damage))
+				{
+					me->setFaction(35);
 
-                    if(attacker && attacker->GetTypeId() == TYPEID_PLAYER)
-                        attacker->ToPlayer()->KilledMonsterCredit(54586, 0);
+					if (attacker && attacker->GetTypeId() == TYPEID_PLAYER)
+						attacker->ToPlayer()->KilledMonsterCredit(54586, 0);
 
-                    damage = 0;
-                    me->CombatStop();
-                    isInCombat = false;
-                    me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE);
-                    Talk(urand(0, 7));
-                    me->GetMotionMaster()->MovePoint(0, 1446.322876f, 3389.027588f, 173.782471f);
-                }
-            }
+					damage = 0;
+					me->CombatStop();
+					isInCombat = false;
+					//me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE);
+					//speak randomly instead and random emote
+					switch (urand(0, 3))
+					{
+					case 0: me->HandleEmoteCommand(EMOTE_ONESHOT_BOW);
+					        me->MonsterSay("My skills are no match for yours. I admit defeat.", LANG_UNIVERSAL, 0); break;
+					case 1: me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE); 
+						    me->MonsterSay("I have never seen a trainee with skills such as yours. I must tell the others.", LANG_UNIVERSAL, 0); break;
+					case 2: me->HandleEmoteCommand(EMOTE_ONESHOT_BOW);
+						    me->MonsterSay("You are an honorable opponent.", LANG_UNIVERSAL, 0); break;
+					case 3: me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE); 
+						    me->MonsterSay("Your skills are too great. I yield.", LANG_UNIVERSAL, 0); break;
+					default: break;
+					}
+					
+					//go to one of three random spots after combat.
+					switch (urand(0, 2))
+					{
+					case 0: me->GetMotionMaster()->MovePoint(0, 1446.322876f, 3389.027588f, 173.782471f); break;
+					case 1: me->GetMotionMaster()->MovePoint(0, 1433.819458f, 3349.269287f, 172.936386f); break;
+					case 2: me->GetMotionMaster()->MovePoint(0, 1418.402466f, 3379.007080f, 172.923874f); break;
+					default: break;
+					}
+				 
 
-            void EnterCombat(Unit* unit)
-            {
-                isInCombat = true;
-            }
+				}
+			}
 
-            void JustRespawned()
-            {
-                Reset();
-            }
+			void EnterCombat(Unit* unit)
+			{
+				isInCombat = true;
+			}
 
-            void UpdateAI(const uint32 diff)
-            {
-                if (isInCombat)
-                {
-                    DoMeleeAttackIfReady();
-                    return;
-                }
-                else
-                {
-                    if (punch1 <= diff)
-                    {
-                        me->HandleEmoteCommand(35);
-                        punch1 = 7500;
-                    }
-                    else
-                        punch1 -= diff;
+			void JustRespawned()
+			{
+				Reset();
+			}
 
-                    if (punch2 <= diff)
-                    {
-                        me->HandleEmoteCommand(36);
-                        punch2 = 7500;
-                    }
-                    else
-                        punch2 -= diff;
+			void UpdateAI(const uint32 diff)
+			{
+				if (isInCombat)
+				{
+					DoMeleeAttackIfReady();
+					return;
+				}
+				else
+				{
+					if (punch1 <= diff)
+					{
+						me->HandleEmoteCommand(35);
+						punch1 = 7500;
+					}
+					else
+						punch1 -= diff;
 
-                    if (punch3 <= diff)
-                    {
-                        me->HandleEmoteCommand(37);
-                        punch3 = 7500;
-                    }
-                    else
-                        punch3 -= diff;
-                }
+					if (punch2 <= diff)
+					{
+						me->HandleEmoteCommand(36);
+						punch2 = 7500;
+					}
+					else
+						punch2 -= diff;
 
-                if (me->GetPositionX() == 1446.322876f && me->GetPositionY() == 3389.027588f && me->GetPositionZ() == 173.782471f)
-                    me->ForcedDespawn(1000);
-            }
+					if (punch3 <= diff)
+					{
+						me->HandleEmoteCommand(37);
+						punch3 = 7500;
+					}
+					else
+						punch3 -= diff;
+				}
+
+				
+				//despawn at these spots
+				if (me->GetPositionX() == 1446.322876f && me->GetPositionY() == 3389.027588f && me->GetPositionZ() == 173.782471f)
+					me->DespawnOrUnsummon(100);
+			
+				if (me->GetPositionX() == 1433.819458f && me->GetPositionY() == 3349.269287f && me->GetPositionZ() == 172.936386f)
+					me->DespawnOrUnsummon(100);
+				
+				if (me->GetPositionX() == 1418.402466f && me->GetPositionY() == 3379.007080f && me->GetPositionZ() == 172.923874f)
+					me->DespawnOrUnsummon(100);
+
+			
+		}
         };
 };
 
@@ -336,7 +372,17 @@ public:
                 me->CombatStop();
                 me->setFaction(35);
                 me->SetFullHealth();
-                me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE);
+                
+				switch (urand(0, 2))
+				{
+				case 0: me->MonsterSay("It seems I have more training to do. Thank you for the lesson.", LANG_UNIVERSAL, 0);
+					    me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE); break;
+				case 1: me->MonsterSay("Amazing! You're much stronger than you look.", LANG_UNIVERSAL, 0);
+					    me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE); break;
+				case 2: me->MonsterSay("It was an honor to be defeated by you", LANG_UNIVERSAL, 0);
+					    me->HandleEmoteCommand(EMOTE_ONESHOT_SALUTE); break;
+				default: break;
+				}
                 events.Reset();
                 events.ScheduleEvent(EVENT_RESET, 5000);
                 damage = 0;
@@ -372,7 +418,10 @@ public:
                         events.ScheduleEvent(EVENT_FALCON, 4000);
                         break;
                     case EVENT_RESET: //remechant
-                        Reset();
+                       // Reset();
+
+					// have him despawn instead of reset, looks better.
+						me->DespawnOrUnsummon(100);
                     	break;
                     case EVENT_CHECK_AREA:
                         if (me->GetAreaId() != 5843) // Grotte Paisible
@@ -409,6 +458,22 @@ public:
         {
             if (me->GetPositionX() == 1403.440430f && me->GetPositionY() == 3566.382568f)
                 me->DespawnOrUnsummon();
+
+			if (me->GetPositionX() == 1415.110107f && me->GetPositionY() == 3537.270264f)
+				me->DespawnOrUnsummon();
+
+			if (me->GetPositionX() == 1435.938110f && me->GetPositionY() == 3551.951172f)
+				me->DespawnOrUnsummon();
+
+			if (me->GetPositionX() == 1415.230591f && me->GetPositionY() == 3552.024170f)
+				me->DespawnOrUnsummon();
+
+			if (me->GetPositionX() == 1384.352051f && me->GetPositionY() == 3552.465576f)
+				me->DespawnOrUnsummon();
+
+			if (me->GetPositionX() == 1403.720459f && me->GetPositionY() == 3546.111816f)
+				me->DespawnOrUnsummon();
+			
         }
     };
 };
@@ -445,7 +510,7 @@ public:
         
         void DamageTaken(Unit* pDoneBy, uint32 &uiDamage)
         {
-            if(me->GetHealthPct() < 25 && pDoneBy && pDoneBy->ToCreature() && pDoneBy->ToCreature()->GetEntry() == 54130)
+			if (me->GetHealthPct() < 25 && pDoneBy && pDoneBy->ToCreature() && pDoneBy->ToCreature()->GetEntry() == 99995)
                 uiDamage = 0;
         }
         
@@ -484,7 +549,7 @@ public:
 
                 guidMob[i] = 0;
 
-                if(TempSummon* temp = me->SummonCreature(54130, me->GetPositionX()-3+rand()%6, me->GetPositionY() + 4 + rand()%4, me->GetPositionZ()+2, 3.3f, TEMPSUMMON_CORPSE_TIMED_DESPAWN, 10000))
+				if (TempSummon* temp = me->SummonCreature(99995, me->GetPositionX() - 3 + rand() % 6, me->GetPositionY() + 4 + rand() % 4, me->GetPositionZ() + 2, 3.3f, TEMPSUMMON_CORPSE_TIMED_DESPAWN, 10000))
                 {
                     guidMob[i] = temp->GetGUID();
                     temp->SetFacingToObject(me);
@@ -502,17 +567,27 @@ public:
             std::list<Player*> PlayerList;
             GetPlayerListInGrid(PlayerList, me, 20.0f);
             std::list<Creature*> amberleafScampList;
-            GetCreatureListWithEntryInGrid(amberleafScampList, me, 54130, 15.0f);
+			GetCreatureListWithEntryInGrid(amberleafScampList, me, 99995, 15.0f);
             for (auto player: PlayerList)
                 if (player->GetQuestStatus(29419) == QUEST_STATUS_INCOMPLETE)
                 {
                     player->KilledMonsterCredit(54855, 0);
                     for (auto amberleafScamp: amberleafScampList)
-                        amberleafScamp->GetMotionMaster()->MovePoint(0, 1403.440430f, 3566.382568f, 88.840317f);
+						switch (urand(0, 5))
+					    {
+						case 0: amberleafScamp->GetMotionMaster()->MovePoint(0, 1403.440430f, 3566.382568f, 88.840317f); break;
+						case 1: amberleafScamp->GetMotionMaster()->MovePoint(0, 1415.110107f, 3537.270264f, 86.494148f); break;
+						case 2: amberleafScamp->GetMotionMaster()->MovePoint(0, 1435.938110f, 3551.951172f, 86.563499f); break;
+						case 3: amberleafScamp->GetMotionMaster()->MovePoint(0, 1415.230591f, 3552.024170f, 89.001579f); break;
+						case 4: amberleafScamp->GetMotionMaster()->MovePoint(0, 1384.352051f, 3552.465576f, 89.972229f); break;
+						case 5: amberleafScamp->GetMotionMaster()->MovePoint(0, 1403.720459f, 3546.111816f, 89.443756f); break;
+						default: break;
+				      	}
                     Talk(0);
+					
                 }
 
-            events.Update(diff);
+		    events.Update(diff);
 
             while (uint32 eventId = events.ExecuteEvent())
             {
@@ -543,6 +618,7 @@ public:
                     }
                 }
             }
+
         }
     };
 };
@@ -599,7 +675,7 @@ public:
             {
                 if (IntroTimer <= diff)
                 {
-                    //me->MonsterYell("Follow me!", LANG_UNIVERSAL, 0);
+                    me->MonsterYell("Follow me!", LANG_UNIVERSAL, 0);
                     IntroTimer = 0;
                     me->GetMotionMaster()->MoveJump(1216.78f, 3499.44f, 91.15f, 10, 20, 10);
                 }
@@ -1233,7 +1309,8 @@ public:
             switch (action)
             {
             case ACTION_TALK:
-                Talk(0);
+				me->MonsterSay("I hope you are ready, young one. Jaomin Ro is waiting for you, next to the bridge.", LANG_UNIVERSAL, 0);
+				// Talk(0);
                 hasSaidIntro = true;
                 break;
             default:

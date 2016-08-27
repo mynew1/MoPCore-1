@@ -525,6 +525,7 @@ enum UnitState
     UNIT_STATE_FLEEING_MOVE    = 0x02000000,
     UNIT_STATE_CHASE_MOVE      = 0x04000000,
     UNIT_STATE_FOLLOW_MOVE     = 0x08000000,
+	UNIT_STATE_IGNORE_PATHFINDING = 0x10000000,   // do not use pathfinding in any MovementGenerator  Possibly not work?
     UNIT_STATE_UNATTACKABLE    = (UNIT_STATE_IN_FLIGHT | UNIT_STATE_ONVEHICLE),
     // for real move using movegen check and stop (except unstoppable flight)
     UNIT_STATE_MOVING          = UNIT_STATE_ROAMING_MOVE | UNIT_STATE_CONFUSED_MOVE | UNIT_STATE_FLEEING_MOVE | UNIT_STATE_CHASE_MOVE | UNIT_STATE_FOLLOW_MOVE ,
@@ -972,6 +973,28 @@ struct SpellPeriodicAuraLogInfo
 };
 
 uint32 createProcExtendMask(SpellNonMeleeDamage* damageInfo, SpellMissInfo missCondition);
+
+struct RedirectThreatInfo
+{
+	RedirectThreatInfo() : _targetGUID(0), _threatPct(0) { }
+	uint64 _targetGUID;
+	uint32 _threatPct;
+
+	uint64 GetTargetGUID() const { return _targetGUID; }
+	uint32 GetThreatPct() const { return _threatPct; }
+
+	void Set(uint64 guid, uint32 pct)
+	{
+		_targetGUID = guid;
+		_threatPct = pct;
+	}
+
+	void ModifyThreatPct(int32 amount)
+	{
+		amount += _threatPct;
+		_threatPct = uint32(std::max(0, amount));
+	}
+};
 
 #define MAX_DECLINED_NAME_CASES 5
 
@@ -1483,8 +1506,13 @@ class Unit : public WorldObject
         void TriggerAurasProcOnEvent(CalcDamageInfo& damageInfo);
         void TriggerAurasProcOnEvent(std::list<AuraApplication*>* myProcAuras, std::list<AuraApplication*>* targetProcAuras, Unit* actionTarget, uint32 typeMaskActor, uint32 typeMaskActionTarget, uint32 spellTypeMask, uint32 spellPhaseMask, uint32 hitMask, Spell* spell, DamageInfo* damageInfo, HealInfo* healInfo);
         void TriggerAurasProcOnEvent(ProcEventInfo& eventInfo, std::list<AuraApplication*>& procAuras);
-
-        void HandleEmoteCommand(uint32 anim_id);
+		void HandleEmoteCommand(uint32 anim_id);
+		void HandleEmote(uint32 emote_id);
+		void HandleEmoteState(uint32 emote_id);
+		uint32 GetEmoteState() { return GetUInt32Value(UNIT_NPC_EMOTESTATE); }
+		void SetStoredEmoteState(uint32 emoteState) { m_oldEmoteState = emoteState; }
+		uint32 GetStoredEmoteState() { return m_oldEmoteState; }
+		void ClearEmotes();
         void AttackerStateUpdate (Unit* victim, WeaponAttackType attType = BASE_ATTACK, bool extra = false);
 
         void CalculateMeleeDamage(Unit* victim, uint32 damage, CalcDamageInfo* damageInfo, WeaponAttackType attackType = BASE_ATTACK);
@@ -2229,6 +2257,13 @@ class Unit : public WorldObject
         uint32 GetModelForForm(ShapeshiftForm form);
         uint32 GetModelForTotem(PlayerTotemType totemType);
 
+		// Redirect Threat
+		void SetRedirectThreat(uint64 guid, uint32 pct) { _redirectThreadInfo.Set(guid, pct); }
+		void ResetRedirectThreat() { SetRedirectThreat(0, 0); }
+		void ModifyRedirectThreat(int32 amount) { _redirectThreadInfo.ModifyThreatPct(amount); }
+		uint32 GetRedirectThreatPercent() const { return _redirectThreadInfo.GetThreatPct(); }
+		Unit* GetRedirectThreatTarget();
+
         void SetReducedThreatPercent(uint32 pct, uint64 guid)
         {
             m_reducedThreatPercent = pct;
@@ -2434,6 +2469,8 @@ class Unit : public WorldObject
 
         uint32 m_SendTransportMoveTimer;
 
+		uint32 m_oldEmoteState; // Used to store and restore old emote states for creatures.
+
         uint32 m_lastRegenTime[MAX_POWERS];
         uint32 m_powers[MAX_POWERS];
     private:
@@ -2491,6 +2528,8 @@ class Unit : public WorldObject
 
         uint32 m_reducedThreatPercent;
         uint64 m_misdirectionTargetGUID;
+
+		RedirectThreatInfo _redirectThreadInfo;
 
         bool m_cleanupDone; // lock made to not add stuff after cleanup before delete
         bool m_duringRemoveFromWorld; // lock made to not add stuff after beginning removing from world

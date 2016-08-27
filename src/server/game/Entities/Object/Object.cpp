@@ -3102,6 +3102,15 @@ Player* WorldObject::FindNearestPlayer(float range, bool alive)
     return player;
 }
 
+std::list<Player*> WorldObject::GetPlayersInRange(float range, bool alive) const
+{
+	std::list<Player*> players;
+	MoPCore::AnyPlayerInObjectRangeCheck checker(this, range, alive);
+	MoPCore::PlayerListSearcher<MoPCore::AnyPlayerInObjectRangeCheck> searcher(this, players, checker);
+	VisitNearbyWorldObject(range, searcher);
+	return players;
+}
+
 void WorldObject::GetGameObjectListWithEntryInGrid(std::list<GameObject*>& gameobjectList, uint32 entry, float maxSearchRange) const
 {
 	CellCoord pair(MoPCore::ComputeCellCoord(this->GetPositionX(), this->GetPositionY()));

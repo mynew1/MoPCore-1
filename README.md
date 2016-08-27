@@ -3,10 +3,12 @@
   
   Originally written by TrinityCore team, MaNGOS, based on Jade's Core,SkyFire548.
   
-  Thanks and credits goes to all contributors. Special thanks to Ziex0 for source sharing  
-  Feel free to make a patch using pull here.
-  
-  Best wishes
-                 cooler-SAI
-				          
-                                            ( Skype: cooler19860212 )
+
+ The plan is to add every available script for every instance, new scripts will be added one at a time to prevent massive amounts of errors.
+ 
+ Also making the game "playable" slowly.
+
+ 
+
+ May or may not function properly.
+ 

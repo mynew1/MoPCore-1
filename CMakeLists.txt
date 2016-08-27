@@ -10,10 +10,11 @@
 # implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 # Set projectname (must be done AFTER setting configurationtypes)
-project(MoPCore)
+project(MaddieCore-MOP)
 
 # Fix compile
-SET(CMAKE_C_FLAGS "-std=gnu99" CACHE STRING "" FORCE)
+SET(CMAKE_C_FLAGS "" CACHE STRING "" FORCE)
+#above was -std=gnu99
 
 # CMake policies (can not be handled elsewhere)
 cmake_minimum_required(VERSION 2.8.9)
